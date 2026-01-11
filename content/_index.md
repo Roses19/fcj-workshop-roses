@@ -25,9 +25,9 @@ chapter: false
 
 &emsp; **Internship Position:** FCJ Data Intern
 
-&emsp; **Internship Duration:** From 12/08/2025 to 12/11/2025
+&emsp; **Internship Duration:** From 15/12/2025 to 17/1/2026
 
-![Your profile picture](/images/avatar.png)
+![Your profile picture](/images/avatar.jpg)
 
 ### Report Content
 

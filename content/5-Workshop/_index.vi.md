@@ -6,23 +6,24 @@ chapter: false
 pre: " <b> 5. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
 
 
-# Đảm bảo truy cập Hybrid an toàn đến S3 bằng cách sử dụng VPC endpoint
+
+# Tự động hóa pipeline ETL cho dữ liệu Reddit trên AWS
 
 #### Tổng quan
 
-**AWS PrivateLink** cung cấp kết nối riêng tư đến các dịch vụ aws từ VPCs hoặc trung tâm dữ liệu (on-premise) mà không làm lộ lưu lượng truy cập ra ngoài public internet.
+Dự án này xây dựng một hệ thống tự động hóa phân tích dữ liệu Reddit trên AWS với các thành phần chính sau:
 
-Trong bài lab này, chúng ta sẽ học cách tạo, cấu hình, và kiểm tra VPC endpoints để cho phép workload của bạn tiếp cận các dịch vụ AWS mà không cần đi qua Internet công cộng.
++ **Thu thập và lưu trữ dữ liệu**: Dữ liệu được lấy tự động từ Reddit API bằng Apache Airflow và lưu trữ trên Amazon S3 theo mô hình Data Lake (Raw và Transformed).
 
-Chúng ta sẽ tạo hai loại endpoints để truy cập đến Amazon S3: gateway vpc endpoint và interface vpc endpoint. Hai loại vpc endpoints này mang đến nhiều lợi ích tùy thuộc vào việc bạn truy cập đến S3 từ môi trường cloud hay từ trung tâm dữ liệu (on-premise).
-+ **Gateway** - Tạo gateway endpoint để gửi lưu lượng đến Amazon S3 hoặc DynamoDB using private IP addresses. Bạn điều hướng lưu lượng từ VPC của bạn đến gateway endpoint bằng các bảng định tuyến (route tables)
-+ **Interface** - Tạo interface endpoint để gửi lưu lượng đến các dịch vụ điểm cuối (endpoints) sử dụng Network Load Balancer để phân phối lưu lượng. Lưu lượng dành cho dịch vụ điểm cuối được resolved bằng DNS.
++ **Xử lý và quản lý dữ liệu**: AWS Glue ETL Jobs được sử dụng để làm sạch và chuyển đổi dữ liệu, trong khi AWS Glue Data Catalog và Crawler quản lý schema và metadata.
 
++ **Phân tích và truy vấn**: Amazon Athena cho phép truy vấn trực tiếp trên Data Lake, còn Amazon Redshift đóng vai trò Data Warehouse cho các truy vấn phân tích.
+
++ **Trực quan hóa**: Amazon QuickSight được dùng để xây dựng dashboard và hiển thị insight từ dữ liệu.
+
+Hệ thống giúp dữ liệu Reddit được cập nhật và phân tích hoàn toàn tự động, hỗ trợ theo dõi xu hướng và hành vi người dùng trên nền tảng AWS.
 #### Nội dung
 
 1. [Tổng quan về workshop](5.1-Workshop-overview/)

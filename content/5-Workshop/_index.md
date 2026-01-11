@@ -5,21 +5,22 @@ weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Secure Hybrid Access to S3 using VPC Endpoints
+# Automating the ETL Pipeline for Reddit Data on AWS
 
 #### Overview
 
-**AWS PrivateLink** provides private connectivity to AWS services from VPCs and your on-premises networks, without exposing your traffic to the Public Internet.
+This project builds an automated system for analyzing Reddit data on AWS with the following main components:
 
-In this lab, you will learn how to create, configure, and test VPC endpoints that enable your workloads to reach AWS services without traversing the Public Internet.
++ **Data collection and storage**: Data is automatically retrieved from the Reddit API using Apache Airflow and stored in Amazon S3 following the Data Lake model (Raw and Transformed).
 
-You will create two types of endpoints to access Amazon S3: a Gateway VPC endpoint, and an Interface VPC endpoint. These two types of VPC endpoints offer different benefits depending on if you are accessing Amazon S3 from the cloud or your on-premises location
-+ **Gateway** - Create a gateway endpoint to send traffic to Amazon S3 or DynamoDB using private IP addresses.You route traffic from your VPC to the gateway endpoint using route tables.
-+ **Interface** - Create an interface endpoint to send traffic to endpoint services that use a Network Load Balancer to distribute traffic. Traffic destined for the endpoint service is resolved using DNS.
++ **Data processing and management**: AWS Glue ETL Jobs are used to clean and transform the data, while AWS Glue Data Catalog and Crawler manage schemas and metadata.
+
++ **Analytics and querying**: Amazon Athena enables direct querying on the Data Lake, while Amazon Redshift serves as the Data Warehouse for analytical queries.
+
++ **Visualization**: Amazon QuickSight is used to build dashboards and display insights from the data.
+
+The system ensures that Reddit data is continuously updated and analyzed automatically, supporting the tracking of trends and user behavior on the AWS platform.
 
 #### Content
 

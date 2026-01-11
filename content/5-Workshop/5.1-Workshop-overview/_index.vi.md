@@ -6,14 +6,20 @@ chapter : false
 pre : " <b> 5.1. </b> "
 ---
 
-#### Giới thiệu về VPC Endpoint
+#### Giới thiệu về Data Platform
 
-+ Điểm cuối VPC (endpoint) là thiết bị ảo. Chúng là các thành phần VPC có thể mở rộng theo chiều ngang, dự phòng và có tính sẵn sàng cao. Chúng cho phép giao tiếp giữa tài nguyên điện toán của bạn và dịch vụ AWS mà không gây ra rủi ro về tính sẵn sàng.
-+ Tài nguyên điện toán đang chạy trong VPC có thể truy cập Amazon S3 bằng cách sử dụng điểm cuối Gateway. Interface Endpoint  PrivateLink có thể được sử dụng bởi tài nguyên chạy trong VPC hoặc tại TTDL.
+Data Platform là hệ thống cho phép thu thập, lưu trữ, xử lý và phân tích dữ liệu ở quy mô lớn một cách tự động và có khả năng mở rộng. Trong kiến trúc này, dữ liệu được tổ chức theo các tầng (raw, transformed, analytics) nhằm đảm bảo dữ liệu gốc được bảo toàn, đồng thời tối ưu cho việc phân tích và báo cáo.
 
 #### Tổng quan về workshop
-Trong workshop này, bạn sẽ sử dụng hai VPC.
-+ **"VPC Cloud"** dành cho các tài nguyên cloud như Gateway endpoint và EC2 instance để kiểm tra.
-+ **"VPC On-Prem"** mô phỏng môi trường truyền thống như nhà máy hoặc trung tâm dữ liệu của công ty. Một EC2 Instance chạy phần mềm StrongSwan VPN đã được triển khai trong "VPC On-prem" và được cấu hình tự động để thiết lập đường hầm VPN Site-to-Site với AWS Transit Gateway. VPN này mô phỏng kết nối từ một vị trí tại TTDL (on-prem) với AWS cloud. Để giảm thiểu chi phí, chỉ một phiên bản VPN được cung cấp để hỗ trợ workshop này. Khi lập kế hoạch kết nối VPN cho production workloads của bạn, AWS khuyên bạn nên sử dụng nhiều thiết bị VPN để có tính sẵn sàng cao.
+Trong workshop này, dữ liệu Reddit được phân tích trên AWS dựa trên kiến trúc Data Lake kết hợp Data Warehouse.
 
-![overview](/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
+Hệ thống bao gồm:
+
++ **"Apache Airflow"** chạy trong Docker để thu thập dữ liệu từ Reddit API và điều phối pipeline.
++ **"Amazon S3"** để lưu trữ dữ liệu ở hai lớp: Raw và Transformed.
++ **"AWS Glue & Data Catalog"** để tự động phát hiện schema và xử lý dữ liệu.
++ **"Amazon Athena"** để truy vấn dữ liệu trực tiếp trên S3.
++ **"Amazon Redshift"** để lưu trữ dữ liệu phân tích.
++ **"Amazon QuickSight"** để xây dựng dashboard và trực quan hóa dữ liệu.
+
+![overview](/images/5-Workshop/5.1-Workshop-overview/architecture.png)
