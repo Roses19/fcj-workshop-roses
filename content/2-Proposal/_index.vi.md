@@ -1,6 +1,6 @@
 ---
 title: "Bản đề xuất"
-date: 2024-01-01
+date: 2026-01-01
 weight: 2
 chapter: false
 pre: " <b> 2. </b> "
@@ -77,21 +77,20 @@ Luồng dữ liệu được thực hiện qua 3 giai đoạn chính:
 - *Sau triển khai*: Nghiên cứu thêm trong vòng 6 tháng để nâng cấp hệ thống.  
 
 ### 6. Ước tính ngân sách  
-Có thể xem chi phí trên [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=13f55200468bb2d49c9498816417a4f1c7a393a4)  
+Có thể xem chi phí trên [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=1412e308aca85b914fe80db814739f567edfbb29)  
 
-*Chi phí hạ tầng*  
-- AWS Lambda: 0,00 USD/tháng (1.000 request, 512 MB lưu trữ).  
-- S3 Standard: 0,15 USD/tháng (6 GB, 2.100 request, 1 GB quét).  
-- Truyền dữ liệu: 0,02 USD/tháng (1 GB vào, 1 GB ra).  
-- AWS Amplify: 0,35 USD/tháng (256 MB, request 500 ms).  
-- Amazon API Gateway: 0,01 USD/tháng (2.000 request).  
-- AWS Glue ETL Jobs: 0,02 USD/tháng (2 DPU).  
-- AWS Glue Crawlers: 0,07 USD/tháng (1 crawler).  
-- MQTT (IoT Core): 0,08 USD/tháng (5 thiết bị, 45.000 tin nhắn).  
+*Chi phí hạ tầng*   
+- S3 Standard: 0,17 USD/tháng (6 GB, 5000 request, 1 GB quét).  
+- Truyền dữ liệu: 0,54 USD/tháng (6 GB vào, 6 GB ra).  
+- AWS Glue ETL Jobs: 3,09 USD/tháng (2 DPU, ETL Spark jobs và Python Shell jobs).  
+- AWS Glue Crawlers: 0,66 USD/tháng (1 crawler).
+- AWS Glue Data Catalog: 0,01 USD/tháng  
+- Amazon Athena: 0,74 USD/tháng (10 truy vấn/ngày, 0,5 GB mỗi truy vấn) 
+- Amazon Redshift Serverless: 7,32 USD/tháng (4 RPU, ~0,16 giờ/ngày)
 
-*Tổng*: 0,7 USD/tháng, 8,40 USD/12 tháng  
-- *Phần cứng*: 265 USD một lần (Raspberry Pi 5 và cảm biến).  
+*Tổng*: 15,38 USD/tháng ≈ 184,56 USD / 12 tháng
 
+- Chi phí demo Amazon QuickSight: 9–12 USD/tháng (1 Author, không dùng SPICE, xóa khi không dùng)
 ### 7. Đánh giá rủi ro  
 *Tính sẵn sàng cục bộ:* Máy chủ local mất kết nối sẽ làm gián đoạn việc thu thập.
 - Giảm thiểu: Cấu hình cơ chế "Catch-up" trong Airflow để tự động chạy lại task bị lỡ.

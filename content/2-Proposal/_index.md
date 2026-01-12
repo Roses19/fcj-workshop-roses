@@ -1,115 +1,117 @@
 ---
 title: "Proposal"
-date: 2024-01-01
+date: 2026-01-01
 weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-In this section, you need to summarize the contents of the workshop that you **plan** to conduct.
-
-# IoT Weather Platform for Lab Research
-## A Unified AWS Serverless Solution for Real-Time Weather Monitoring
+# AWS Reddit ETL Platform
+## Automating the ETL Pipeline for Reddit Data on AWS
 
 ### 1. Executive Summary
-The IoT Weather Platform is designed for the ITea Lab team in Ho Chi Minh City to enhance weather data collection and analysis. It supports up to 5 weather stations, with potential scalability to 10-15, utilizing Raspberry Pi edge devices with ESP32 sensors to transmit data via MQTT. The platform leverages AWS Serverless services to deliver real-time monitoring, predictive analytics, and cost efficiency, with access restricted to 5 lab members via Amazon Cognito.
+This project is designed to build an automated social media data collection and processing system that optimizes the balance between available on-premise resources and cloud infrastructure. The system adopts a Hybrid Architecture, where **Apache Airflow** runs on a physical local server to handle orchestration, while AWS Serverless services are used to process and store large-scale data.
+
+The solution fully automates the Reddit data lifecycle—from data ingestion, automatic schema discovery using **AWS Glue Crawlers**, to Spark-based ETL transformations that convert data into Parquet format, significantly reducing query costs. The system leverages **Amazon Redshift Serverless** with a minimal configuration (4 RPUs) for high-performance analytics and visualization through **Amazon QuickSight** Standard, minimizing monthly operating costs while maintaining analytical flexibility.
 
 ### 2. Problem Statement
 ### What’s the Problem?
-Current weather stations require manual data collection, becoming unmanageable with multiple units. There is no centralized system for real-time data or analytics, and third-party platforms are costly and overly complex.
+Extracting and analyzing data from social media platforms faces several key challenges:
+
+- Fragmented infrastructure – Data scraping and analytics are often disconnected, causing stale or lost data due to manual handling.
+
+- Inefficient compute utilization – Running a 24/7 data warehouse for infrequent queries results in unnecessary costs, especially for small and medium-sized projects.
+
+- API rate limits and costs – Reddit enforces strict API limits (100 QPM), requiring intelligent orchestration to avoid account suspension.
 
 ### The Solution
-The platform uses AWS IoT Core to ingest MQTT data, AWS Lambda and API Gateway for processing, Amazon S3 for storage (including a data lake), and AWS Glue Crawlers and ETL jobs to extract, transform, and load data from the S3 data lake to another S3 bucket for analysis. AWS Amplify with Next.js provides the web interface, and Amazon Cognito ensures secure access. Similar to Thingsboard and CoreIoT, users can register new devices and manage connections, though this platform operates on a smaller scale and is designed for private use. Key features include real-time dashboards, trend analysis, and low operational costs.
+A modernized data pipeline is proposed:
 
+- Local orchestration – Airflow runs in Docker on an on-premise server to eliminate cloud compute costs for orchestration.
+
+- Serverless ingestion & ETL – Amazon S3 and AWS Glue handle large-scale unstructured data processing without server management.
+
+- Optimized analytics – Redshift Serverless with 4 RPUs executes SQL analytics only when needed, delivering high performance at very low cost.
+    
 ### Benefits and Return on Investment
-The solution establishes a foundational resource for lab members to develop a larger IoT platform, serving as a study resource, and provides a data foundation for AI enthusiasts for model training or analysis. It reduces manual reporting for each station via a centralized platform, simplifying management and maintenance, and improves data reliability. Monthly costs are $0.66 USD per the AWS Pricing Calculator, with a 12-month total of $7.92 USD. All IoT equipment costs are covered by the existing weather station setup, eliminating additional development expenses. The break-even period of 6-12 months is achieved through significant time savings from reduced manual work.
+This hybrid solution reduces fixed infrastructure costs by approximately 30–40% compared to a fully cloud-based deployment. Operational expenses occur only when AWS services are used, averaging USD 25–30 per month. The time from breaking Reddit news to visualization in QuickSight is reduced from days to hours, enabling near-real-time insights.
 
 ### 3. Solution Architecture
-The platform employs a serverless AWS architecture to manage data from 5 Raspberry Pi-based stations, scalable to 15. Data is ingested via AWS IoT Core, stored in an S3 data lake, and processed by AWS Glue Crawlers and ETL jobs to transform and load it into another S3 bucket for analysis. Lambda and API Gateway handle additional processing, while Amplify with Next.js hosts the dashboard, secured by Cognito. The architecture is detailed below:
-
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
-
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+The system applies an event-driven, serverless architecture combined with a container-based local orchestration layer.
+![Social Media Big Data Pipeline Architecture](/images/2-Proposal/architecture.png)
 
 ### AWS Services Used
-- **AWS IoT Core**: Ingests MQTT data from 5 stations, scalable to 15.
-- **AWS Lambda**: Processes data and triggers Glue jobs (two functions).
-- **Amazon API Gateway**: Facilitates web app communication.
-- **Amazon S3**: Stores raw data in a data lake and processed outputs (two buckets).
-- **AWS Glue**: Crawlers catalog data, and ETL jobs transform and load it.
-- **AWS Amplify**: Hosts the Next.js web interface.
-- **Amazon Cognito**: Secures access for lab users.
 
+- **Amazon S3** – Serves as the Data Lake for both raw and transformed data
+- **AWS Glue Crawler** – Automatically detects schema and updates metadata
+- **AWS Glue Data Catalog** – Centralized metadata repository
+- **AWS Glue ETL** – Serverless Spark processing for data cleansing and Parquet conversion
+- **Amazon Athena** – Serverless SQL querying directly on S3
+- **Amazon Redshift Serverless** – Auto-scaling data warehouse for high-performance analytics
+- **Amazon QuickSight Standard** – Serverless BI platform for dashboarding
 ### Component Design
-- **Edge Devices**: Raspberry Pi collects and filters sensor data, sending it to IoT Core.
-- **Data Ingestion**: AWS IoT Core receives MQTT messages from the edge devices.
-- **Data Storage**: Raw data is stored in an S3 data lake; processed data is stored in another S3 bucket.
-- **Data Processing**: AWS Glue Crawlers catalog the data, and ETL jobs transform it for analysis.
-- **Web Interface**: AWS Amplify hosts a Next.js app for real-time dashboards and analytics.
-- **User Management**: Amazon Cognito manages user access, allowing up to 5 active accounts.
+
+- **Ingestion** – Airflow (Local Docker) pulls Reddit data via API and stores raw JSON in S3
+
+- **Processing** – Glue Crawler updates schema, and Glue Spark ETL converts JSON to partitioned Parquet
+
+- **Analytics** – Data is queried in Redshift Serverless and visualized in QuickSight dashboards
 
 ### 4. Technical Implementation
 **Implementation Phases**
-This project has two parts—setting up weather edge stations and building the weather platform—each following 4 phases:
-- Build Theory and Draw Architecture: Research Raspberry Pi setup with ESP32 sensors and design the AWS serverless architecture (1 month pre-internship)
-- Calculate Price and Check Practicality: Use AWS Pricing Calculator to estimate costs and adjust if needed (Month 1).
-- Fix Architecture for Cost or Solution Fit: Tweak the design (e.g., optimize Lambda with Next.js) to stay cost-effective and usable (Month 2).
-- Develop, Test, and Deploy: Code the Raspberry Pi setup, AWS services with CDK/SDK, and Next.js app, then test and release to production (Months 2-3).
+
+- Local Environment Setup – Configure Docker Compose for Airflow and establish secure IAM access to AWS
+- Reddit Extractor Development – Implement Python scripts using PRAW with exponential backoff to respect API limits
+- Glue Pipeline – Configure Crawlers and Spark ETL jobs to clean and partition Parquet data by date
+- Data Warehouse Setup – Create Redshift Serverless namespace and workgroup with 4 RPUs
+- Dashboard Design – Connect QuickSight to Redshift and build analytics dashboards 
 
 **Technical Requirements**
-- Weather Edge Station: Sensors (temperature, humidity, rainfall, wind speed), a microcontroller (ESP32), and a Raspberry Pi as the edge device. Raspberry Pi runs Raspbian, handles Docker for filtering, and sends 1 MB/day per station via MQTT over Wi-Fi.
-- Weather Platform: Practical knowledge of AWS Amplify (hosting Next.js), Lambda (minimal use due to Next.js), AWS Glue (ETL), S3 (two buckets), IoT Core (gateway and rules), and Cognito (5 users). Use AWS CDK/SDK to code interactions (e.g., IoT Core rules to S3). Next.js reduces Lambda workload for the fullstack web app.
+- Reddit API – Script-type developer account with 100 QPM rate limit
+- Compute (Orchestration) – Local server with at least 8 GB RAM for Docker & Celery workers
+- Storage – Parquet format in S3 reduces storage and query costs by up to 90% compared to JSON
+- Redshift Serverless – Minimal 4 RPU configuration for cost-efficient analytics
+- QuickSight Standard – Low-cost BI for basic reporting
 
 ### 5. Timeline & Milestones
 **Project Timeline**
-- Pre-Internship (Month 0): 1 month for planning and old station review.
-- Internship (Months 1-3): 3 months.
-    - Month 1: Study AWS and upgrade hardware.
-    - Month 2: Design and adjust architecture.
-    - Month 3: Implement, test, and launch.
-- Post-Launch: Up to 1 year for research.
-
+- Pre-internship (Month 0) – AWS fundamentals and ETL architecture training
+- Internship Phase: 
+    - Weeks 1–2: AWS learning and hardware upgrade
+    - Week 3: Architecture design and tuning
+    - Weeks 4–5: Deployment, testing, and production rollout
+- Post-deployment – 6-month research phase for system enhancement
 ### 6. Budget Estimation
-You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01).  
-Or you can download the [Budget Estimation File](../attachments/budget_estimation.pdf).
+You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=1412e308aca85b914fe80db814739f567edfbb29).
 
 ### Infrastructure Costs
 - AWS Services:
-    - AWS Lambda: $0.00/month (1,000 requests, 512 MB storage).
-    - S3 Standard: $0.15/month (6 GB, 2,100 requests, 1 GB scanned).
-    - Data Transfer: $0.02/month (1 GB inbound, 1 GB outbound).
-    - AWS Amplify: $0.35/month (256 MB, 500 ms requests).
-    - Amazon API Gateway: $0.01/month (2,000 requests).
-    - AWS Glue ETL Jobs: $0.02/month (2 DPUs).
-    - AWS Glue Crawlers: $0.07/month (1 crawler).
-    - MQTT (IoT Core): $0.08/month (5 devices, 45,000 messages).
+    - Amazon S3 (Data Lake): USD 0.17/month (6 GB, 5,000 requests, 1 GB scanned)
+    - Data Transfer: USD 0.54/month (6 GB inbound, 6 GB outbound)
+    - AWS Glue ETL Jobs: USD 3.09/month (2 DPUs, Spark and Python Shell jobs)
+    - AWS Glue Crawlers: USD 0.66/month (1 crawler)
+    - AWS Glue Data Catalog: USD 0.01/month
+    - Amazon Athena: USD 0.74/month (10 queries/day, 0.5 GB per query)
+    - Amazon Redshift Serverless: USD 7.32/month (4 RPUs, ~0.16 hours/day)
 
-Total: $0.7/month, $8.40/12 months
+**Total**: $15.38/month ≈ $ 184.56/year
 
-- Hardware: $265 one-time (Raspberry Pi 5 and sensors).
+- Amazon QuickSight (demo only): USD 9–12/month (1 Author, no SPICE, deleted after demo)
 
 ### 7. Risk Assessment
-#### Risk Matrix
-- Network Outages: Medium impact, medium probability.
-- Sensor Failures: High impact, low probability.
-- Cost Overruns: Medium impact, low probability.
 
-#### Mitigation Strategies
-- Network: Local storage on Raspberry Pi with Docker.
-- Sensors: Regular checks and spares.
-- Cost: AWS budget alerts and optimization.
+-  Local server availability – Failure may interrupt ingestion
+    - Mitigation: Enable Airflow catch-up to rerun missed tasks
 
-#### Contingency Plans
-- Revert to manual methods if AWS fails.
-- Use CloudFormation for cost-related rollbacks.
+-  API rate limits – Exceeding 100 QPM may block access
+    - Mitigation: Limit to 5–10 subreddits and use Celery queues
+
+-  Schema drift – Reddit data structure may change
+
+    - Mitigation: Use Glue Crawlers for automatic schema discovery
 
 ### 8. Expected Outcomes
-#### Technical Improvements: 
-Real-time data and analytics replace manual processes.  
-Scalable to 10-15 stations.
-#### Long-term Value
-1-year data foundation for AI research.  
-Reusable for future projects.
+- Fully automated Reddit data ingestion
+- AWS cost optimized to stay below USD 30/month
+- Easily scalable by adding new subreddits via Airflow configuration
+- Interactive dashboards providing real-time insights into social media trends.
