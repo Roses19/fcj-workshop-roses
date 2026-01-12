@@ -1,4 +1,4 @@
-baseURL = "https://workshop-roses.fcjuni.com/"
+baseURL = "https://roses19.github.io/fcj-workshop-roses/"
 relativeURLs = false
 canonifyURLs = true
 defaultContentLanguage = "en"
