@@ -91,7 +91,7 @@ airflow-init:
 ```
 + Sau khi hoàn tất, hệ thống Airflow sẵn sàng hoạt động.
 
-7. Triển khai các thành phần Airflow
+4. Triển khai các thành phần Airflow
 
 + Webserver cung cấp giao diện để quản lý DAG, theo dõi trạng thái và xem log.
 ```

@@ -6,90 +6,82 @@ chapter : false
 pre : " <b> 5.3.2 </b> "
 ---
 
-#### Create S3 bucket
 
-1. Navigate to **S3 management console**
-2. In the Bucket console, choose **Create bucket**
+#### Reddit API Connection
 
-![Create bucket](/images/5-Workshop/5.3-S3-vpc/create-bucket.png)
+The system uses the Reddit API through a Developer script-type application to collect posts and comments from subreddits such as dataengineering.
 
-3. In **the Create bucket console**
-+ **Name the bucket**: choose a name that hasn't been given to any bucket globally (hint: lab number and your name)
+Apache Airflow uses the PRAW library to handle: OAuth authentication, data retrievalretrieval, compliance with Reddit API request limits
 
-![Bucket name](/images/5-Workshop/5.3-S3-vpc/bucket-name.png)
+```
+def connect_reddit(client_id, client_secret, user_agent) -> Reddit:
+    try:
+        reddit = praw.Reddit(client_id = client_id,
+                             client_secret = client_secret,
+                             user_agent = user_agent)
+        print("Connect to Reddit")
+        return reddit
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+```
+#### Reddit ETL DAG in Airflow
+- Apache Airflow is used to orchestrate the entire Reddit data collection and storage process.
 
-+ Leave other fields as they are (default)
-+ Scroll down and choose **Create bucket**
+- A DAG and a scheduled task are defined as follows:
+    ```
+    dag = DAG(  
+        dag_id='etl_reddit_pipeline',
+        default_args=default_args,
+        schedule_interval='@daily',
+        catchup=False,
+        tags=['reddit', 'etl', 'pipeline']
+    )
+    ```
++ Docker is used to verify that the DAG is running successfully (the airflow-init service must be executed first to initialize the database and create the Airflow user).
+![Check docker](/images/5-Workshop/5.3-Ingestion/docker.png)
 
-![Create](/images/5-Workshop/5.3-S3-vpc/create-button.png) 
++ DAG successfully executed
+![Check DAG](/images/5-Workshop/5.3-Ingestion/DAG.png)
 
-+ Successfully create S3 bucket.
+#### Reddit Data Processing
+- The extracted data includes the following fields:
+id, title, score, num_comments, author, created_utc, url, over_18, edited, spoiler, stickied
 
-![Success](/images/5-Workshop/5.3-S3-vpc/bucket-success.png)
+- The **extract_posts** function queries the Reddit API via PRAW and retrieves posts from a given subreddit based on a time filter.
+```
+def extract_posts (reddit_instance: Reddit, subreddit:str, time_filter:str, limit = None):
+    subreddit = reddit_instance.subreddit(subreddit)
+    posts = subreddit.top(time_filter = time_filter, limit=limit)
 
-#### Connect to EC2 with session manager
+    post_lists = []
 
-+ For this workshop, you will use **AWS Session Manager** to access several **EC2 instances**. **Session Manager** is a fully managed **AWS Systems Manager** capability that allows you to manage your **Amazon EC2 instances**  and on-premises virtual machines (VMs) through an interactive one-click browser-based shell. Session Manager provides secure and auditable instance management without the need to open inbound ports, maintain bastion hosts, or manage SSH keys.
+    for post in posts: 
+        post_dict = vars(post)
+        
+        post = {key: post_dict[key] for key in POST_FIELDS}
+        post_lists.append(post)
 
-+ First cloud journey [Lab](https://000058.awsstudygroup.com/1-introduce/) for indepth understanding of Session manager.
+    return post_lists
+```
++ Each post is converted into a dictionary and only the required fields are retained to reduce data size and optimize downstream processing.
 
-1. In the **AWS Management Console**, start typing ```Systems Manager``` in the quick search box and press **Enter**:
+- The **transform_data** function performs data normalization before storing it in the Data Lake.
+```
+def transform_data (post_df: pd.DataFrame):
+    post_df['created_utc'] = pd.to_datetime(post_df.get('created_utc', None),unit='s',errors='coerce')
+    post_df['over_18'] = post_df.get('over_18', False)
+    post_df['over_18'] = post_df['over_18'].fillna(False).astype(bool)
+    post_df['author'] = post_df['author'].astype(str)
+    edited_mode = post_df['edited'].mode()
+    post_df['edited'] = np.where(post_df['edited'].isin([True, False]),
+                                 post_df['edited'],edited_mode).astype(bool)
+    post_df['num_comments'] = post_df['num_comments'].astype(int)
+    post_df['score'] = post_df['score'].astype(int)
+    post_df['title'] = post_df['title'].astype(str)
+    return post_df
+```
+#### Tóm tắt
 
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm.png)
-
-2. From the **Systems Manager** menu, find **Node Management** in the left menu and click **Session Manager**:
-
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm1.png)
-
-3. Click **Start Session**, and select **the EC2 instance** named **Test-Gateway-Endpoint**. 
-{{% notice info %}}
-This EC2 instance is already running in "VPC Cloud" and will be used to test connectivity to Amazon S3 through the Gateway endpoint you just created (s3-gwe). {{% /notice %}}
-
-![Start session](/images/5-Workshop/5.3-S3-vpc/start-session.png)
-
-**Session Manager** will open a new browser tab with a shell prompt: sh-4.2 $
-
-![Success](/images/5-Workshop/5.3-S3-vpc/start-session-success.png)
-
-You have successfully start a session - connect to the EC2 instance in VPC cloud. In the next step, we will create a S3 bucket and a file in it. 
-
-#### Create a file and upload to s3 bucket
-
-1. Change to the ssm-user's home directory by typing ```cd ~``` in the CLI
-
-![Change user's dir](/images/5-Workshop/5.3-S3-vpc/cli1.png)
-
-2. Create a new file to use for testing with the command ```fallocate -l 1G testfile.xyz```, which will create a file of 1GB size named "testfile.xyz".
-
-![Create file](/images/5-Workshop/5.3-S3-vpc/cli-file.png)
-
-3. Upload file to S3 bucket with command ```aws s3 cp testfile.xyz s3://your-bucket-name```. Replace your-bucket-name with the name of S3 bucket that you created earlier.
-
-![Uploaded](/images/5-Workshop/5.3-S3-vpc/uploaded.png)
-
-You have successfully uploaded the file to your S3 bucket. You can now terminate the session.
-
-#### Check object in S3 bucket
-
-1. Navigate to S3 console.  
-2. Click the name of your s3 bucket
-3. In the Bucket console, you will see the file you have uploaded to your S3 bucket
-
-![Check S3](/images/5-Workshop/5.3-S3-vpc/check-s3-bucket.png)
-
-#### Section summary
-
-Congratulation on completing access to S3 from VPC. In this section, you created a Gateway endpoint for Amazon S3, and used the AWS CLI to upload an object. The upload worked because the Gateway endpoint allowed communication to S3, without needing an Internet Gateway attached to "VPC Cloud". This demonstrates the functionality of the Gateway endpoint as a secure path to S3 without traversing the Public Internet.
-
-
-
-
-
-
-
-
-
-
-
-
-
+This section completes the data ingestion phase. Reddit data has been successfully collected and normalized before being loaded into the Data Lake. The raw API data is transformed into structured tabular format, making it ready for storage on Amazon S3 and for querying through Athena and Redshift in the next stages of the pipeline.
+![Task extraction](/images/5-Workshop/5.3-Ingestion/extract.png)
