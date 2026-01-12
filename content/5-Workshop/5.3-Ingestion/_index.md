@@ -16,5 +16,5 @@ The entire Airflow environment is deployed using Docker, and consists of the mai
 
 #### Content
 
-- [Docker Configuration](3.1-Docker-Configuration/)
-- [Test gateway endpoint](3.2-test-gwe/)
+- [Docker Configuration](5.3.1-Docker-Configuration/)
+- [Ingestion pipeline](5.3.2-ingestion-pipeline/)

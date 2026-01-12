@@ -15,5 +15,5 @@ Toàn bộ môi trường Airflow được triển khai trong Docker, bao gồm 
 
 #### Nội dung
 
-- [Cấu hình Docker](3.1-Docker-Configuration/)
-- [Test gateway endpoint](3.2-test-gwe/)
+- [Cấu hình Docker](5.3.1-Docker-Configuration/)
+- [Quy trình thu thập dữ liệu](5.3.2-ingestion-pipeline/)
