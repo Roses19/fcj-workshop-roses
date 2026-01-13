@@ -44,7 +44,8 @@ def connect_reddit(client_id, client_secret, user_agent) -> Reddit:
 ![Check DAG](/images/5-Workshop/5.3-Ingestion/DAG.png)
 
 #### Xử lý dữ liệu Reddit
-Các trường dữ liệu bao gồm: id, title, score, num_comments, author,
+
+- Các trường dữ liệu bao gồm: id, title, score, num_comments, author,
  created_utc, url, over_18, edited , spoiler, stickied
 - Hàm **extract_posts** được sử dụng để truy vấn Reddit API thông qua thư viện PRAW và lấy danh sách các bài viết từ một subreddit theo bộ lọc thời gian.
 ```

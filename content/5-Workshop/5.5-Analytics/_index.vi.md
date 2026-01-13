@@ -1,95 +1,63 @@
 ---
-title : "VPC Endpoint Policies"
-date : 2024-01-01
+title : "Truy vấn dữ liệu và trực quan hóa"
+date : 2026-01-01
 weight : 5
 chapter : false
 pre : " <b> 5.5 </b> "
 ---
 
-Khi bạn tạo một Interface Endpoint  hoặc cổng, bạn có thể đính kèm một chính sách điểm cuối để kiểm soát quyền truy cập vào dịch vụ mà bạn đang kết nối. Chính sách VPC Endpoint là chính sách tài nguyên IAM mà bạn đính kèm vào điểm cuối. Nếu bạn không đính kèm chính sách khi tạo điểm cuối, thì AWS sẽ đính kèm chính sách mặc định cho bạn để cho phép toàn quyền truy cập vào dịch vụ thông qua điểm cuối.
+#### 1. Truy vấn dữ liệu với Amazon Athena
 
-Bạn có thể tạo chính sách chỉ hạn chế quyền truy cập vào các S3 bucket cụ thể. Điều này hữu ích nếu bạn chỉ muốn một số Bộ chứa S3 nhất định có thể truy cập được thông qua điểm cuối.
+- Sau khi Glue Crawler đã tạo bảng trong Glue Data Catalog, dữ liệu trong S3 (Transformed Zone) có thể được truy vấn trực tiếp bằng Amazon Athena mà không cần di chuyển dữ liệu.
 
-Trong phần này, bạn sẽ tạo chính sách VPC Endpoint hạn chế quyền truy cập vào S3 bucket được chỉ định trong chính sách VPC Endpoint.
+- Athena sử dụng metadata từ Glue Catalog để hiểu: Schema, Data type, Location của file trong S3
 
-![endpoint diagram](/images/5-Workshop/5.5-Policy/s3-bucket-policy.png)
-
-#### Kết nối tới EC2 và xác minh kết nối tới S3. 
-
-1. Bắt đầu một phiên AWS Session Manager mới trên máy chủ có tên là Test-Gateway-Endpoint. Từ phiên này, xác minh rằng bạn có thể liệt kê nội dung của bucket mà bạn đã tạo trong Phần 1: Truy cập S3 từ VPC.
-
+- Cấu hình Athena
+  + Chọn Database: reddit_db
+  + Chọn bảng: transformed
+  + Chọn Query settings -> gắn kết quả truy vấn được lưu tại: s3://amzn-s3-reddit-airflow-project/athena-script/
+![athena](/images/5-Workshop/5.5-Analytics/athena.png)
+- Ví dụ truy vấn:
 ```
-aws s3 ls s3://<your-bucket-name>
+SELECT 
+    author,
+    COUNT(*) AS total_posts,
+    AVG(score) AS avg_score,
+    SUM(num_comments) AS total_comments
+FROM "AwsDataCatalog"."reddit_db"."transformed"
+GROUP BY author
+ORDER BY total_posts DESC;
 ```
-![test](/images/5-Workshop/5.5-Policy/test1.png)
+- Đạt kết quả như sau: 
+![query](/images/5-Workshop/5.5-Analytics/result-query.png)
+- Ở phần đầu phân tích, Athena được sử dụng để phân tích nhanh, kiểm tra dữ liệu và Validate chất lượng ETL
 
-Nội dung của bucket bao gồm hai tệp có dung lượng 1GB đã được tải lên trước đó.
+#### 2. Nạp dữ liệu từ S3 vào Amazon Redshift
 
-2. Tạo một bucket S3 mới; tuân thủ mẫu đặt tên mà bạn đã sử dụng trong Phần 1, nhưng thêm '-2' vào tên. Để các trường khác là mặc định và nhấp vào **Create**.
+- Mặc dù Athena phù hợp cho truy vấn ad-hoc, nhưng để BI DashboardDashboard, Join lớnlớn, Performance cao thì dữ liệu cần được đưa vào Amazon Redshift (Data Warehouse).
+- Với các cấu hình đã được thiết lập sẵn ở phần chuẩn bị, bao gồm tạo namespace và workgroup, ta cần chọn query data - > Query in query Editor v2:
+![query](/images/5-Workshop/5.5-Analytics/redshift-serverless.png)
 
-![create bucket](/images/5-Workshop/5.5-Policy/create-bucket.png)
+- Sau đó connect tới workgroup đã tạo, sử dụng Federated user để không cần dùng password cho database: 
+![connect wg](/images/5-Workshop/5.5-Analytics/connectwg.png)
+- Tiếp đó load dữ liệu từ S3 sang Data Warehouse:
+![load data](/images/5-Workshop/5.5-Analytics/loaddata.png)
+- Chọn tiếp schema **public**, đặt tên bảng trong kho dữ liệu và chọn IAM role mặc định:
+![schema](/images/5-Workshop/5.5-Analytics/schema.png)
+- Kho dữ liệu sau khi được load thành công:
+![dwh](/images/5-Workshop/5.5-Analytics/dwh.png)
+#### 3. Định hướng trực quan hóa và phân tích nâng cao
 
-3. Tạo bucket thành công.
+- Mặc dù ở giai đoạn hiện tại khối lượng dữ liệu Reddit chưa đủ lớn để triển khai hiệu quả các hệ thống Business Intelligence (BI), kiến trúc nền tảng đã được thiết kế sẵn sàng cho việc mở rộng trong tương lai.
 
-![Success](/images/5-Workshop/5.5-Policy/create-bucket-success.png)
+- Khi dữ liệu tiếp tục được thu thập theo thời gian (daily ingestion từ Airflow), kho dữ liệu Amazon Redshift sẽ dần hình thành một historical data warehouse với độ sâu theo thời gian. Tại thời điểm đó, các công cụ BI như Amazon QuickSight có thể được tích hợp trực tiếp vào Redshift để:
 
-Policy mặc định cho phép truy cập vào tất cả các S3 Buckets thông qua VPC endpoint.
+- Trực quan hóa xu hướng tăng trưởng bài viết theo subreddit
 
-4. Trong giao diện **Edit Policy**, sao chép và dán theo policy sau, thay thế yourbucketname-2 với tên bucket thứ hai của bạn. Policy này sẽ cho phép truy cập đến bucket mới thông qua VPC endpoint, nhưng không cho phép truy cập đến các bucket còn lại. Chọn **Save** để kích hoạt policy.
+- Phân tích hành vi tương tác (score, comment, ESS_updated) theo thời gian
 
+- Theo dõi sự thay đổi của chủ đề và mức độ ảnh hưởng
 
-```
-{
-  "Id": "Policy1631305502445",
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "Stmt1631305501021",
-      "Action": "s3:*",
-      "Effect": "Allow",
-      "Resource": [
-      				"arn:aws:s3:::yourbucketname-2",
-       				"arn:aws:s3:::yourbucketname-2/*"
-       ],
-      "Principal": "*"
-    }
-  ]
-}
-```
+- Hỗ trợ ra quyết định dựa trên dữ liệu lịch sử và dữ liệu gần real-time
 
-![custom policy](/images/5-Workshop/5.5-Policy/policy2.png)
-
-Cấu hình policy thành công.
-
-![success](/images/5-Workshop/5.5-Policy/success.png)
-
-5. Từ session của bạn trên Test-Gateway-Endpoint instance, kiểm tra truy cập đến S3 bucket bạn tạo ở bước đầu
-
-```
-aws s3 ls s3://<yourbucketname>
-```
-
-Câu lệnh trả về lỗi bởi vì truy cập vào S3 bucket không có quyền trong VPC endpoint policy.
-
-![error](/images/5-Workshop/5.5-Policy/error.png)
-
-6. Trở lại home directory của bạn trên EC2 instance ```cd~```
-
-+ Tạo file ```fallocate -l 1G test-bucket2.xyz ```
-+ Sao chép file lên bucket thứ  2 ```aws s3 cp test-bucket2.xyz s3://<your-2nd-bucket-name>```
-
-![success](/images/5-Workshop/5.5-Policy/test2.png)
-
-Thao tác này được cho phép bởi VPC endpoint policy.
-
-![success](/images/5-Workshop/5.5-Policy/test2-success.png)
-
-Sau đó chúng ta kiểm tra truy cập vào S3 bucket đầu tiên
-
- ```aws s3 cp test-bucket2.xyz s3://<your-1st-bucket-name>```
-
- ![fail](/images/5-Workshop/5.5-Policy/test2-fail.png)
-
- Câu lệnh xảy ra lỗi bởi vì bucket không có quyền truy cập bởi VPC endpoint policy.
-
-Trong phần này, bạn đã tạo chính sách VPC Endpoint cho Amazon S3 và sử dụng AWS CLI để kiểm tra chính sách. Các hoạt động AWS CLI liên quan đến bucket S3 ban đầu của bạn thất bại vì bạn áp dụng một chính sách chỉ cho phép truy cập đến bucket thứ hai mà bạn đã tạo. Các hoạt động AWS CLI nhắm vào bucket thứ hai của bạn thành công vì chính sách cho phép chúng. Những chính sách này có thể hữu ích trong các tình huống khi bạn cần kiểm soát quyền truy cập vào tài nguyên thông qua VPC Endpoint.
+Như vậy, hệ thống hiện tại không chỉ phục vụ cho việc xử lý và truy vấn dữ liệu, mà còn đóng vai trò là một nền tảng phân tích dữ liệu doanh nghiệp hoàn chỉnh, sẵn sàng mở rộng sang lớp trực quan hóa và phân tích nâng cao khi dữ liệu đạt quy mô đủ lớn.

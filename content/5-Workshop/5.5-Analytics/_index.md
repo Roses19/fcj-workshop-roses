@@ -1,99 +1,68 @@
 ---
-title : "VPC Endpoint Policies"
-date : 2024-01-01
+title : "Analytics and Visualization"
+date : 2026-01-01
 weight : 5
 chapter : false
 pre : " <b> 5.5. </b> "
 ---
 
-When you create an interface or gateway endpoint, you can attach an endpoint policy to it that controls access to the service to which you are connecting. A VPC endpoint policy is an IAM resource policy that you attach to an endpoint. If you do not attach a policy when you create an endpoint, AWS attaches a default policy for you that allows full access to the service through the endpoint.
 
-You can create a policy that restricts access to specific S3 buckets only. This is useful if you only want certain S3 Buckets to be accessible through the endpoint.
+#### 1. Querying Data with Amazon Athena
+- After the Glue Crawler creates tables in the Glue Data Catalog, data stored in the S3 Transformed Zone can be queried directly using Amazon Athena without moving the data.
 
-In this section you will create a VPC endpoint policy that restricts access to the S3 bucket specified in the VPC endpoint policy.
+- Athena uses metadata from the Glue Data Catalog to understand: Schema, data types, and file locations in S3
 
-![endpoint diagram](/images/5-Workshop/5.5-Policy/s3-bucket-policy.png)
+- Athena configuration
 
-#### Connect to an EC2 instance and verify connectivity to S3
+  + Database: reddit_db
 
-1. Start a new AWS Session Manager session on the instance named Test-Gateway-Endpoint. From the session, verify that you can list the contents of the bucket you created in Part 1: Access S3 from VPC:
+  + Table: transformed
 
+  + Query settings → query results are stored at: s3://amzn-s3-reddit-airflow-project/athena-script/
+
+![athena](/images/5-Workshop/5.5-Analytics/athena.png)
+- Example query:
 ```
-aws s3 ls s3://\<your-bucket-name\>
+SELECT 
+    author,
+    COUNT(*) AS total_posts,
+    AVG(score) AS avg_score,
+    SUM(num_comments) AS total_comments
+FROM "AwsDataCatalog"."reddit_db"."transformed"
+GROUP BY author
+ORDER BY total_posts DESC;
 ```
-![test](/images/5-Workshop/5.5-Policy/test1.png)
+- Result: 
+![query](/images/5-Workshop/5.5-Analytics/result-query.png)
+- In the early stage of analysis, Athena is used for rapid exploratory analysis, data inspection and validation of ETL quality.
 
-The bucket contents include the two 1 GB files uploaded in earlier.
+#### 2. Loading Data from S3 into Amazon Redshift
 
-2. Create a new S3 bucket; follow the naming pattern you used in Part 1, but add a '-2' to the name. Leave other fields as default and click create
+- Although Athena is suitable for ad-hoc queries, advanced analytics such as BI dashboards, large joins, and high-performance queries require loading the data into Amazon Redshift (Data Warehouse).
 
-![create bucket](/images/5-Workshop/5.5-Policy/create-bucket.png)
+- With the previously prepared configurations (namespace and workgroup), the data is queried using Query Editor v2:
+![query](/images/5-Workshop/5.5-Analytics/redshift-serverless.png)
 
-Successfully create bucket
+- The connection is established to the created workgroup using Federated user authentication, which eliminates the need for database passwords: 
+![connect wg](/images/5-Workshop/5.5-Analytics/connectwg.png)
+- Data is then loaded from S3 into the Data Warehouse:
+![load data](/images/5-Workshop/5.5-Analytics/loaddata.png)
+- The public schema is selected, a table name is assigned in the warehouse, and the default IAM role is used:
+![schema](/images/5-Workshop/5.5-Analytics/schema.png)
+- The Data Warehouse after a successful load:
+![dwh](/images/5-Workshop/5.5-Analytics/dwh.png)
+#### 3. Future Direction for Visualization and Advanced Analytics
 
-![Success](/images/5-Workshop/5.5-Policy/create-bucket-success.png)
+- Although the current volume of Reddit data is not yet large enough to fully exploit Business Intelligence (BI) systems, the platform architecture has been designed to be scalable and future-ready.
 
-3. Navigate to: Services > VPC > Endpoints, then select the Gateway VPC endpoint you created earlier. Click the Policy tab. Click Edit policy.
+- As data continues to be collected over time through daily ingestion via Airflow, Amazon Redshift will gradually evolve into a historical data warehouse with increasing temporal depth. At that stage, BI tools such as Amazon QuickSight can be integrated directly with Redshift to enable:
 
-![policy](/images/5-Workshop/5.5-Policy/policy1.png)
+  + Visualization of post growth trends by subreddit
 
-The default policy allows access to all S3 Buckets through the VPC endpoint.
+  + Analysis of engagement behavior (score, comments, ESS_updated) over time
 
-4. In Edit Policy console, copy & Paste the following policy, then replace yourbucketname-2 with your 2nd bucket name. This policy will allow access through the VPC endpoint to your new bucket, but not any other bucket in Amazon S3. Click Save to apply the policy.
+  + Monitoring topic evolution and influence
 
-```
-{
-  "Id": "Policy1631305502445",
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "Stmt1631305501021",
-      "Action": "s3:*",
-      "Effect": "Allow",
-      "Resource": [
-      				"arn:aws:s3:::yourbucketname-2",
-       				"arn:aws:s3:::yourbucketname-2/*"
-       ],
-      "Principal": "*"
-    }
-  ]
-}
-```
+  + Supporting data-driven decision making using both historical and near real-time data
 
-![custom policy](/images/5-Workshop/5.5-Policy/policy2.png)
-
-Successfully customize policy
-
-![success](/static/images/5-Workshop/5.5-Policy/success.png)
-
-5. From your session on the Test-Gateway-Endpoint instance, test access to the S3 bucket you created in Part 1: Access S3 from VPC
-```
-aws s3 ls s3://<yourbucketname>
-```
-
-This command will return an error because access to this bucket is not permitted by your new VPC endpoint policy:
-
-![error](/static/images/5-Workshop/5.5-Policy/error.png)
-
-6. Return to your home directory on your EC2 instance ` cd~ `
-
-+ Create a file ```fallocate -l 1G test-bucket2.xyz ```
-+ Copy file to 2nd bucket ```aws s3 cp test-bucket2.xyz s3://<your-2nd-bucket-name>```
-
-![success](/static/images/5-Workshop/5.5-Policy/test2.png)
-
-This operation succeeds because it is permitted by the VPC endpoint policy.
-
-![success](/static/images/5-Workshop/5.5-Policy/test2-success.png)
-
-+ Then we test access to the first bucket by copy the file to 1st bucket `aws s3 cp test-bucket2.xyz s3://<your-1st-bucket-name>`
-
-![fail](/static/images/5-Workshop/5.5-Policy/test2-fail.png)
-
-This command will return an error because access to this bucket is not permitted by your new VPC endpoint policy.
-
-#### Part 3 Summary:
-
-In this section, you created a VPC endpoint policy for Amazon S3, and used the AWS CLI to test the policy. AWS CLI actions targeted to your original S3 bucket failed because you applied a policy that only allowed access to the second bucket you created. AWS CLI actions targeted for your second bucket succeeded because the policy allowed them. These policies can be useful in situations where you need to control access to resources through VPC endpoints.
-
-
+Therefore, the current system not only supports data processing and querying, but also serves as a complete enterprise-grade analytics platform, ready to be extended with visualization and advanced analytics once the dataset reaches sufficient scale.

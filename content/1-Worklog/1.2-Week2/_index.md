@@ -5,53 +5,46 @@ weight: 1
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
-
 
 ### Week 2 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
-
+* Master data cleansing, transformation, and optimization using **AWS Glue and PySpark**.  
+* Understand and apply **Monitoring, Cost Management, and Security** for a cloud data platform.  
+* Learn core **AWS Data & Analytics services** including **S3, Glue, Athena, and QuickSight**.  
+* Build and manage a **Data Lake and ETL pipeline on AWS**.
 ### Tasks to be carried out this week:
 | Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 2 | - **ETL Transformation**:<br>&emsp; + Build Glue Jobs (PySpark) to clean data.<br>&emsp; + Convert data formats to optimize performance. | 22/12/2025 | 22/12/2025 | |
+| 3 | - **Monitoring & Cost Management**<br>&emsp; + CloudWatch logs & metrics<br>&emsp; + AWS Budgets<br>&emsp; + Cost Explorer | 23/12/2025 | 23/12/2025 | https://000008.awsstudygroup.com/ |
+| 4 | - **IAM & Security for Data Platform**<br>&emsp; + IAM User vs Role vs Policy<br>&emsp; + IAM for Glue, Athena, Redshift<br>&emsp; + S3 Bucket Policy vs IAM Policy<br>&emsp; + KMS & data encryption | 24/12/2025 | 24/12/2025 | https://000033.awsstudygroup.com/ |
+| 5 | - **Networking for AWS Data Services**<br>&emsp; + VPC, Subnet, Internet Gateway<br>&emsp; + VPC Endpoints for S3 & Glue<br>&emsp; + Public vs Private access<br>&emsp; + How AWS data services communicate | 25/12/2025 | 26/12/2025 | https://000003.awsstudygroup.com/vi/ |
+| 6 | - **Build an AWS Data Lake**: Learn AWS Glue, Athena, QuickSight.<br>- **Hands-on**:<br>&emsp; + Create appropriate IAM roles and policies.<br>&emsp; + Create S3 buckets, ETL jobs, and crawlers.<br>&emsp; + Query data using Athena SQL. | 26/12/2025 | 26/12/2025 | https://000035.awsstudygroup.com/vi |
+
 
 
 ### Week 2 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+- Built **AWS Glue ETL Jobs (PySpark)** to:
+  - Clean Reddit data  
+  - Normalize schemas for analytics  
+  - Move data from **Raw S3 → Processed S3**
 
-* Successfully created and configured an AWS Free Tier account.
+- Implemented **Monitoring & Cost Management**:
+  - Enabled **CloudWatch Logs** for Glue Jobs  
+  - Set up **AWS Budgets** to track spending  
+  - Used **Cost Explorer** to analyze usage  
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+- Configured **Security for the Data Platform**:
+  - IAM Roles for **Glue, Athena, and S3**  
+  - S3 Bucket Policies following the **least-privilege principle**  
+  - Enabled **KMS encryption** for data  
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+- Designed and understood **Networking for AWS Data Services**:
+  - VPC, Subnets, and Internet Gateway  
+  - VPC Endpoints for **S3 and Glue**  
+  - Differences between **Public and Private access**  
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+- Built an **AWS Data Lake**:
+  - Created S3 structure: `raw/`, `processed/`  
+  - Ran **Glue Crawler** to generate the **Data Catalog**

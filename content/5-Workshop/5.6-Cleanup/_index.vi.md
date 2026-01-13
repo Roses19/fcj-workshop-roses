@@ -8,30 +8,28 @@ pre : " <b> 5.6. </b> "
 
 #### Dọn dẹp tài nguyên
 
-Xin chúc mừng bạn đã hoàn thành xong lab này!
-Trong lab này, bạn đã học về các mô hình kiến trúc để truy cập Amazon S3 mà không sử dụng Public Internet.
+Do hệ thống Data Platform sử dụng nhiều dịch vụ compute (Glue, Redshift), nếu không kiểm soát, chi phí có thể tăng nhanh ngay cả khi không có người dùng.
 
-+ Bằng cách tạo Gateway endpoint, bạn đã cho phép giao tiếp trực tiếp giữa các tài nguyên EC2 và Amazon S3, mà không đi qua Internet Gateway.
-Bằng cách tạo Interface endpoint, bạn đã mở rộng kết nối S3 đến các tài nguyên chạy trên trung tâm dữ liệu trên chỗ của bạn thông qua AWS Site-to-Site VPN hoặc Direct Connect.
 
-#### Dọn dẹp
-1. Điều hướng đến Hosted Zones trên phía trái của bảng điều khiển Route 53. Nhấp vào tên của  s3.us-east-1.amazonaws.com zone. Nhấp vào Delete và xác nhận việc xóa bằng cách nhập từ khóa "delete".
+#### 1.  Glue Crawler
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/delete-zone.png)
+Xóa lịch chạy tự động:  Chọn dịch vụ AWS Glue → Crawlers → reddit_crawler → Delete
+![delete crawler](/images/5-Workshop/5.6-Cleanup/delete-crawler.png)
 
-2. Disassociate Route 53 Resolver Rule - myS3Rule from "VPC Onprem" and Delete it. 
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/vpc.png)
+#### 2. Glue Job
 
-4.Mở console của CloudFormation và xóa hai stack CloudFormation mà bạn đã tạo cho bài thực hành này:
-+ PLOnpremSetup
-+ PLCloudSetup
+Xóa job ETL: Glue → Jobs → reddit_glue_jobjob.py → Action → Delete job(s)
+![delete job](/images/5-Workshop/5.6-Cleanup/delete-job.png)
 
-![delete stack](/images/5-Workshop/5.6-Cleanup/delete-stack.png)
+#### 3. Glue Logs
+Xóa các logs chạy Glue: CloudWatch → Log groups → /aws-glue/* → Delete group logs
+![delete log](/images/5-Workshop/5.6-Cleanup/delete-log.png)
 
-5. Xóa các S3 bucket
+#### 4. Xóa các S3 bucket
 
 + Mở bảng điều khiển S3
-+ Chọn bucket chúng ta đã tạo cho lab, nhấp chuột và xác nhận là empty. Nhấp Delete và xác nhận delete.
-+ 
++ Chọn bucket chúng ta đã tạo cho lab, bao gồm bucket lưu trữ tầng raw, transformed, và athena, glue. N
++ Nhấp chuột và xác nhận là empty. Nhấp Delete và xác nhận delete.
+
 ![delete s3](/images/5-Workshop/5.6-Cleanup/delete-s3.png)

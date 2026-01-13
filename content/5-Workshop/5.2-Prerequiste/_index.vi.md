@@ -93,6 +93,75 @@ Trong dự án, Data Lake được xây dựng trên Amazon S3 để làm tầng
 Data Lake được thiết kế theo từng tầng giúp phân tách rõ ràng từng giai đoạn của vòng đời dữ liệu:
 
 ![create bucket](/images/5-Workshop/5.2-Prerequisite/create-bucket.png)
+#### Khai báo các biến tại config.conf 
+- Mục đích: Sử dung chung và đảm bảo bảo mật
+```
+[database]
+database_host = localhost
+database_name = airflow_reddit
+database_port = 5432
+database_username = postgres
+database_password = postgres
+
+[file_paths]
+input_path = /opt/airflow/data/input
+output_path = /opt/airflow/data/output
+
+[api-keys]
+reddit_secret_key = [your secret key]
+reddit_client_key = [your client key]
+                    
+[aws]
+aws_access_key_id = [your-aws-key]
+aws_secret_access_key_id = [your-secret-key]
+aws_region = us-east-1
+aws_bucket_name = amzn-s3-reddit-airflow-project
+
+[etl_settings]
+batch_size = 100
+error_handling = abort
+log_level = info
+```
+- Sau đó gán tên các biến tại **constants.py**
+```
+import configparser
+import os
+
+parse = configparser.ConfigParser()
+parse.read(os.path.join(os.path.dirname(__file__), '../config/config.conf'))
+
+SECRET = parse.get('api-keys', 'reddit_secret_key')
+CLIENT_ID = parse.get('api-keys', 'reddit_client_key')
+
+DATABASE_HOST = parse.get('database', 'database_host')
+DATABASE_NAME = parse.get('database', 'database_name')
+DATABASE_PORT = parse.get('database', 'database_port')
+DATABASE_USER = parse.get('database', 'database_username')
+DATABASE_PASSWORD = parse.get('database', 'database_password')
+
+#aws
+AWS_ACCESS_KEY_ID = parse.get('aws','aws_access_key_id')
+AWS_SECRET_KEY = parse.get('aws', 'aws_secret_access_key_id')
+AWS_REGION = parse.get('aws', 'aws_region')
+AWS_BUCKET_NAME = parse.get('aws','aws_bucket_name')
+
+INPUT_PATH = parse.get('file_paths', 'input_path')
+OUTPUT_PATH = parse.get('file_paths', 'output_path')
+
+POST_FIELDS = (
+    'id',
+    'title',
+    'score',
+    'num_comments',
+    'author',
+    'created_utc',
+    'url',
+    'over_18',
+    'edited',
+    'spoiler',
+    'stickied'
+)
+```
 
 #### Thiết lập Amazon Redshift Serverless
 
@@ -111,3 +180,4 @@ Quá trình thiết lập gồm các bước chính:
 
 Sau khi hoàn tất, Redshift Serverless sẵn sàng đóng vai trò là Data Warehouse trung tâm, kết nối trực tiếp với S3 Data Lake và Glue Data Catalog để phục vụ các bước xử lý và phân tích tiếp theo.
 Khởi tạo Database phân tích
+

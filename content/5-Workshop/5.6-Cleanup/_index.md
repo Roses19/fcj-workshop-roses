@@ -5,28 +5,33 @@ weight : 6
 chapter : false
 pre : " <b> 5.6. </b> "
 ---
-Congratulations on completing this workshop! 
-In this workshop, you learned architecture patterns for accessing Amazon S3 without using the Public Internet. 
-+ By creating a gateway endpoint, you enabled direct communication between EC2 resources and Amazon S3, without traversing an Internet Gateway. 
-+ By creating an interface endpoint you extended S3 connectivity to resources running in your on-premises data center via AWS Site-to-Site VPN or Direct Connect. 
 
-#### clean up
-1. Navigate to Hosted Zones on the left side of Route 53 console. Click the name of *s3.us-east-1.amazonaws.com* zone. Click Delete and confirm deletion by typing delete. 
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/delete-zone.png)
+#### Resource Cleanup
 
-2. Disassociate the Route 53 Resolver Rule - myS3Rule from "VPC Onprem" and Delete it. 
+Because the Data Platform uses multiple compute-intensive services (such as AWS Glue and Amazon Redshift), costs can increase rapidly if these resources are not properly managed, even when there are no active users. Therefore, cleaning up resources after completing experiments is necessary to avoid unnecessary charges.
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/vpc.png)
+#### 1.  Glue Crawler
 
-4. Open the CloudFormation console  and delete the two CloudFormation Stacks that you created for this lab:
-+ PLOnpremSetup
-+ PLCloudSetup
+Delete the crawler to prevent Glue from continuing to scan data: Go to AWS Glue → Crawlers → reddit_crawler → Delete
+![delete crawler](/images/5-Workshop/5.6-Cleanup/delete-crawler.png)
 
-![delete stack](/images/5-Workshop/5.6-Cleanup/delete-stack.png)
 
-5. Delete S3 buckets
-+ Open S3 console
-+ Choose the bucket we created for the lab, click and confirm empty. Click delete and confirm delete.
+#### 2. Glue Job
 
-![delete s3](/images/5-Workshop/5.6-Cleanup/delete-s3.png)
+Delete the ETL job to stop Glue from consuming compute resources: Go to Glue → Jobs → reddit_glue_jobjob.py → Action → Delete job(s)
+![delete job](/images/5-Workshop/5.6-Cleanup/delete-job.png)
+
+#### 3. Glue Logs
+Delete Glue execution logs to avoid storage charges in CloudWatch: Go to  CloudWatch → Log groups → /aws-glue/* → Delete group logs
+![delete log](/images/5-Workshop/5.6-Cleanup/delete-log.png)
+
+#### 4. Delete S3 Buckets
+
++ Open the Amazon S3 console
+
++ Select the buckets created for the project (raw, transformed, athena, and glue)
+
++ Click Empty to remove all data, then click Delete and confirm
+
+![delete s3](/images/5-Workshop/5.6-Cleanup/delete-bucket.png)

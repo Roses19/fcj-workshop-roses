@@ -5,55 +5,30 @@ weight: 1
 chapter: false
 pre: " <b> 1.5. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
 
 
 ### Mục tiêu tuần 5:
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+- Hoàn thiện **báo cáo và tổng kết** dự án Reddit Data Platform.  
+- Đánh giá **kiến trúc, hiệu năng và chi phí** của hệ thống hiện tại.  
+- Tìm hiểu các **mô hình Data Platform nâng cao** để định hướng mở rộng trong tương lai.
+
 
 ### Các công việc cần triển khai trong tuần này:
 | Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| 2 | **Viết báo cáo kiến trúc & luồng dữ liệu**  <br>&emsp; + Reddit → S3 → Glue → Athena → Redshift → QuickSight  <br>&emsp; + Vẽ sơ đồ kiến trúc | 12/01/2026 | 12/01/2026 | |
+| 3 | **Tổng kết & đánh giá hệ thống**  <br>&emsp; + Đánh giá hiệu năng  <br>&emsp; + Phân tích chi phí  <br>&emsp; + Tổng hợp kết quả | 13/01/2026 | 13/01/2026 | |
+| 4 | **Tìm hiểu kiến trúc Data Platform nâng cao**  <br>&emsp; + Batch vs Streaming  <br>&emsp; + Kinesis & Firehose  <br>&emsp; + Data Lakehouse | 14/01/2026 | 14/01/2026 | https://000072.awsstudygroup.com/vi/10-kinesis-data-analytics/ |
+| 5 | **Tìm hiểu mở rộng hệ thống**   | 15/01/2026 | 15/01/2026 |  |
+| 6 | **Định hướng phát triển & roadmap**  <br>&emsp; + Xây dựng kiến trúc tương lai  <br>&emsp; + Đề xuất cải tiến  <br>&emsp; + Hướng phát triển project | 16/01/2026 | 16/01/2026 | |
 
 ### Kết quả đạt được tuần 5:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
+- Hoàn thiện **báo cáo kỹ thuật** mô tả đầy đủ Reddit Data Platform.  
+- Tổng kết và đánh giá **chi phí, hiệu năng và kiến trúc** của hệ thống.  
+- Xác định **hạn chế và điểm cần cải thiện** của pipeline hiện tại.  
+- Nắm được các **mô hình Data Platform hiện đại** như streaming, lakehouse và multi-source ingestion.  
+- Xây dựng **roadmap mở rộng** cho hệ thống trong tương lai.
 
