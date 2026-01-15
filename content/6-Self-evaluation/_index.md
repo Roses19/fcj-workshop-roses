@@ -6,12 +6,23 @@ chapter: false
 pre: " <b> 6. </b> "
 ---
 
-During my internship at **Amazon Web Services Vietnam Co., Ltd**, I had the opportunity to learn, practice, and apply the knowledge acquired in school to a real-world working environment.  
-I participated in **Automate MLOps on AWS in Serverless way**, through which I improved my skills in **programming, analysis, reporting, using AWS**.  
+During my internship at **Amazon Web Services Vietnam Co., Ltd**, I had the opportunity to participate in a **data engineering project built on AWS**, where data was collected from external APIs and processed through an **ETL – Data Lake – Data Warehouse** architecture.
 
-In terms of work ethic, I always strived to complete tasks well, complied with workplace regulations, and actively engaged with colleagues to improve work efficiency.
+Through this project, I applied the knowledge learned at university to a real-world system, including:
+- Collecting data from the **Reddit API** using Python and Apache Airflow  
+- Storing raw data in **Amazon S3 (Data Lake)**  
+- Cleaning, transforming, and structuring data using **AWS Glue**  
+- Querying and exploring data with **Amazon Athena**  
+- Loading curated data into **Amazon Redshift (Data Warehouse)** for analytical workloads  
+- Visualizing insights using **Amazon QuickSight**
 
-To objectively reflect on my internship period, I would like to evaluate myself based on the following criteria:
+This experience helped me understand the **full lifecycle of data in a modern data platform**, from ingestion and storage to processing, analytics, and visualization.  
+I also gained hands-on experience in working with **AWS cloud infrastructure, IAM permissions, logging, monitoring, and cost-aware resource management**.
+
+In terms of work attitude, I consistently completed assigned tasks on time, actively explored AWS documentation when encountering technical issues, and regularly communicated with my mentor and teammates to improve the quality and reliability of the system.
+
+To objectively reflect on my internship performance, I evaluated myself based on the following criteria:
+
 
 | No. | Criteria                            | Description                                                                                      | Good | Fair | Average |
 | --- | ----------------------------------- | ------------------------------------------------------------------------------------------------ | ---- | ---- | ------- |

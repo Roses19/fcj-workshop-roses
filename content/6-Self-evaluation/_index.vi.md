@@ -6,12 +6,21 @@ chapter: false
 pre: " <b> 6. </b> "
 ---
 
-Trong suốt thời gian thực tập tại **Amazon Web Services Vietnam Co., Ltd**, tôi đã có cơ hội học hỏi, rèn luyện và áp dụng kiến thức đã được trang bị tại trường vào môi trường làm việc thực tế.  
-Tôi đã tham gia **Tự động hóa MLOps trên AWS theo hướng Serverless**, qua đó cải thiện kỹ năng **lập trình, viết báo cáo, sử dụng AWS**.  
+Trong quá trình thực tập tại **Công ty TNHH Amazon Web Services Việt Nam**, tôi có cơ hội tham gia vào dự án **xây dựng hệ thống xử lý và phân tích dữ liệu trên nền tảng AWS**, với dữ liệu được thu thập và xử lý theo mô hình **ETL – Data Lake – Data Warehouse**.
 
-Về tác phong, tôi luôn cố gắng hoàn thành tốt nhiệm vụ, tuân thủ nội quy, và tích cực trao đổi với đồng nghiệp để nâng cao hiệu quả công việc.
+Thông qua dự án này, tôi đã vận dụng kiến thức học được tại trường để xây dựng một hệ thống dữ liệu thực tế, bao gồm:
+- Thu thập dữ liệu từ **Reddit API** bằng Python và Airflow  
+- Lưu trữ dữ liệu thô vào **Amazon S3 (Data Lake)**  
+- Xử lý, làm sạch và chuẩn hóa dữ liệu bằng **AWS Glue**  
+- Truy vấn và phân tích dữ liệu bằng **Amazon Athena**  
+- Nạp dữ liệu đã xử lý vào **Amazon Redshift (Data Warehouse)** để phục vụ báo cáo và phân tích  
+- Trực quan hóa dữ liệu bằng **Amazon QuickSight**
 
-Để phản ánh một cách khách quan quá trình thực tập, tôi xin tự đánh giá bản thân dựa trên các tiêu chí dưới đây:
+Quá trình này giúp tôi hiểu rõ hơn về **vòng đời của dữ liệu trong một hệ thống Data Engineering**, từ thu thập, lưu trữ, xử lý cho đến phân tích và trực quan hóa. Đồng thời, tôi cũng học được cách làm việc với **hạ tầng cloud, phân quyền IAM, logging, giám sát và tối ưu chi phí** trên AWS.
+
+Về thái độ làm việc, tôi luôn cố gắng hoàn thành nhiệm vụ đúng tiến độ, chủ động tìm hiểu tài liệu AWS khi gặp vấn đề kỹ thuật, và thường xuyên trao đổi với mentor cũng như đồng đội để cải thiện chất lượng hệ thống.
+
+Để phản ánh khách quan quá trình thực tập, tôi tự đánh giá bản thân theo các tiêu chí sau:
 
 
 | STT | Tiêu chí                            | Mô tả                                                                                            | Tốt | Khá | Trung bình |

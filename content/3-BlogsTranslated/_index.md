@@ -6,7 +6,7 @@ chapter: false
 pre: " <b> 3. </b> "
 ---
 
-###  [](3.1-Blog1/)
-
+###  [Blog 1 - Build and manage your modern data stack using dbt and AWS Glue through dbt-glue, the new "trusted" dbt adapter](3.1-Blog1/)
+The blog explains how the **dbt-glue adapter** helps optimize data workflows and how to build and manage a modern data platform by combining dbt with AWS Glue. It provides a clear end-to-end view of how to implement a modern data stack using dbt and the dbt-glue adapter.
 
 
