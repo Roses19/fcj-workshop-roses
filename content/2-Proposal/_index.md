@@ -15,7 +15,9 @@ This project is designed to build an automated social media data collection and 
 The solution fully automates the Reddit data lifecycle—from data ingestion, automatic schema discovery using **AWS Glue Crawlers**, to Spark-based ETL transformations that convert data into Parquet format, significantly reducing query costs. The system leverages **Amazon Redshift Serverless** with a minimal configuration (4 RPUs) for high-performance analytics and visualization through **Amazon QuickSight** Standard, minimizing monthly operating costs while maintaining analytical flexibility.
 
 ### 2. Problem Statement
-*** What’s the Problem?***
+
+***What’s the Problem?***
+
 Extracting and analyzing data from social media platforms faces several key challenges:
 
 - Fragmented infrastructure – Data scraping and analytics are often disconnected, causing stale or lost data due to manual handling.
@@ -25,6 +27,7 @@ Extracting and analyzing data from social media platforms faces several key chal
 - API rate limits and costs – Reddit enforces strict API limits (100 QPM), requiring intelligent orchestration to avoid account suspension.
 
 ***The Solution***
+
 A modernized data pipeline is proposed:
 
 - Local orchestration – Airflow runs in Docker on an on-premise server to eliminate cloud compute costs for orchestration.
@@ -34,6 +37,7 @@ A modernized data pipeline is proposed:
 - Optimized analytics – Redshift Serverless with 4 RPUs executes SQL analytics only when needed, delivering high performance at very low cost.
     
 ***Benefits and Return on Investment***
+
 This hybrid solution reduces fixed infrastructure costs by approximately 30–40% compared to a fully cloud-based deployment. Operational expenses occur only when AWS services are used, averaging USD 25–30 per month. The time from breaking Reddit news to visualization in QuickSight is reduced from days to hours, enabling near-real-time insights.
 
 ### 3. Solution Architecture
@@ -49,6 +53,7 @@ The system applies an event-driven, serverless architecture combined with a cont
 - **Amazon Athena** – Serverless SQL querying directly on S3
 - **Amazon Redshift Serverless** – Auto-scaling data warehouse for high-performance analytics
 - **Amazon QuickSight Standard** – Serverless BI platform for dashboarding
+
 *Component Design*
 
 - **Ingestion** – Airflow (Local Docker) pulls Reddit data via API and stores raw JSON in S3
