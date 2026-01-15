@@ -1,0 +1,257 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.134.3"><meta name=description content><meta name=author content="nguyenthihong112000@gmail.com"><link rel=icon href=https://roses19.github.io/fcj-workshop-roses/images/favicon.png type=image/png><title>Build and manage your modern data stack using dbt and AWS Glue through dbt-glue, the new trusted dbt adapter :: Internship Report</title>
+<link href=https://roses19.github.io/fcj-workshop-roses/css/nucleus.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/fontawesome-all.min.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/hybrid.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/featherlight.min.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/perfect-scrollbar.min.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/auto-complete.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/atom-one-dark-reasonable.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/theme.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/hugo-theme.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/theme-workshop.css?1768447978 rel=stylesheet><script src=https://roses19.github.io/fcj-workshop-roses/js/jquery-3.3.1.min.js?1768447978></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=https://roses19.github.io/fcj-workshop-roses/3-blogstranslated/3.1-blog1/><nav id=sidebar class=showVisitedLinks><div id=header-wrapper><div id=header><a id=logo href=https://roses19.github.io/fcj-workshop-roses/><svg id="Layer_1" data-name="Layer 1" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#fff;fill-rule:evenodd}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09 10.85a4.7 4.7.0 00.19 1.48 7.73 7.73.0 00.54 1.19.77.77.0 01.12.38.64.64.0 01-.32.49l-1 .7a.83.83.0 01-.44.15.69.69.0 01-.49-.23 3.8 3.8.0 01-.6-.77q-.25-.42-.51-1a6.14 6.14.0 01-4.89 2.3 4.54 4.54.0 01-3.32-1.19 4.27 4.27.0 01-1.22-3.2 4.28 4.28.0 011.46-3.4A6.06 6.06.0 017.69 6.46a12.47 12.47.0 011.76.13q.92.13 1.91.36V5.73a3.65 3.65.0 00-.79-2.66A3.81 3.81.0 007.86 2.3a7.71 7.71.0 00-1.79.22 12.78 12.78.0 00-1.79.57 4.55 4.55.0 01-.58.22h-.26q-.35.0-.35-.52V2a1.09 1.09.0 01.12-.58 1.2 1.2.0 01.47-.35A10.88 10.88.0 015.77.32 10.19 10.19.0 018.36.0a6 6 0 014.35 1.35 5.49 5.49.0 011.38 4.09zM7.34 13.38a5.36 5.36.0 001.72-.31A3.63 3.63.0 0010.63 12 2.62 2.62.0 0011.19 11a5.63 5.63.0 00.16-1.44v-.7a14.35 14.35.0 00-1.53-.28 12.37 12.37.0 00-1.56-.1 3.84 3.84.0 00-2.47.67A2.34 2.34.0 005 11a2.35 2.35.0 00.61 1.76A2.4 2.4.0 007.34 13.38zm13.35 1.8a1 1 0 01-.64-.16 1.3 1.3.0 01-.35-.65L15.81 1.51a3 3 0 01-.15-.67.36.36.0 01.41-.41H17.7a1 1 0 01.65.16 1.4 1.4.0 01.33.65l2.79 11 2.59-11A1.17 1.17.0 0124.39.6a1.1 1.1.0 01.67-.16H26.4a1.1 1.1.0 01.67.16 1.17 1.17.0 01.32.65L30 12.39 32.88 1.25A1.39 1.39.0 0133.22.6a1 1 0 01.65-.16h1.54a.36.36.0 01.41.41 1.36 1.36.0 010 .26 3.64 3.64.0 01-.12.41l-4 12.86a1.3 1.3.0 01-.35.65 1 1 0 01-.64.16H29.25a1 1 0 01-.67-.17 1.26 1.26.0 01-.32-.67L25.67 3.64l-2.56 10.7a1.26 1.26.0 01-.32.67 1 1 0 01-.67.17zm21.36.44a11.28 11.28.0 01-2.56-.29 7.44 7.44.0 01-1.92-.67 1 1 0 01-.61-.93v-.84q0-.52.38-.52a.9.9.0 01.31.06l.42.17a8.77 8.77.0 001.83.58 9.78 9.78.0 002 .2 4.48 4.48.0 002.43-.55 1.76 1.76.0 00.86-1.57 1.61 1.61.0 00-.45-1.16A4.29 4.29.0 0043 9.22l-2.41-.76A5.15 5.15.0 0138 6.78a3.94 3.94.0 01-.83-2.41 3.7 3.7.0 01.45-1.85 4.47 4.47.0 011.19-1.37 5.27 5.27.0 011.7-.86A7.4 7.4.0 0142.6.0a8.87 8.87.0 011.12.07q.57.07 1.08.19t.95.26a4.27 4.27.0 01.7.29 1.59 1.59.0 01.49.41.94.94.0 01.15.55v.79q0 .52-.38.52a1.76 1.76.0 01-.64-.2 7.74 7.74.0 00-3.2-.64 4.37 4.37.0 00-2.21.47 1.6 1.6.0 00-.79 1.48 1.58 1.58.0 00.49 1.18 4.94 4.94.0 001.83.92L44.55 7a5.08 5.08.0 012.57 1.6A3.76 3.76.0 0147.9 11a4.21 4.21.0 01-.44 1.93 4.4 4.4.0 01-1.21 1.47 5.43 5.43.0 01-1.85.93A8.25 8.25.0 0142.05 15.62z"/><path class="cls-2" d="M45.19 23.81C39.72 27.85 31.78 30 25 30A36.64 36.64.0 01.22 20.57c-.51-.46-.06-1.09.56-.74A49.78 49.78.0 0025.53 26.4 49.23 49.23.0 0044.4 22.53C45.32 22.14 46.1 23.14 45.19 23.81z"/><path class="cls-2" d="M47.47 21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74 3.13-2.2 8.27-1.57 8.86-.83s-.16 5.89-3.09 8.35c-.45.38-.88.18-.68-.32C46.69 25.8 48.17 22.11 47.47 21.21z"/></svg></a></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
+<input data-search-input id=search-by type=search placeholder=Search...>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=https://roses19.github.io/fcj-workshop-roses/js/lunr.min.js?1768447978></script><script type=text/javascript src=https://roses19.github.io/fcj-workshop-roses/js/auto-complete.js?1768447978></script><script type=text/javascript>var baseurl="https://roses19.github.io/fcj-workshop-roses/"</script><script type=text/javascript src=https://roses19.github.io/fcj-workshop-roses/js/search.js?1768447978></script></div><div class=highlightable><ul class=topics><li data-nav-id=/1-worklog/ title=Worklog class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/1-worklog/><b>1. </b>Worklog
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/1-worklog/1.1-week1/ title="Week 1 Worklog" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/1-worklog/1.1-week1/><b>1.1. </b>Week 1 Worklog
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/1-worklog/1.2-week2/ title="Week 2 Worklog" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/1-worklog/1.2-week2/><b>1.2. </b>Week 2 Worklog
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/1-worklog/1.3-week3/ title="Week 3 Worklog" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/1-worklog/1.3-week3/><b>1.3. </b>Week 3 Worklog
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/1-worklog/1.4-week4/ title="Week 4 Worklog" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/1-worklog/1.4-week4/><b>1.4. </b>Week 4 Worklog
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/1-worklog/1.5-week5/ title="Week 5 Worklog" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/1-worklog/1.5-week5/><b>1.5. </b>Week 5 Worklog
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/2-proposal/ title=Proposal class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/2-proposal/><b>2. </b>Proposal
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/3-blogstranslated/ title="Translated Blogs" class="dd-item
+parent"><a href=https://roses19.github.io/fcj-workshop-roses/3-blogstranslated/><b>3. </b>Translated Blogs
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/3-blogstranslated/3.1-blog1/ title="Build and manage your modern data stack using dbt and AWS Glue through dbt-glue, the new trusted dbt adapter" class="dd-item
+active"><a href=https://roses19.github.io/fcj-workshop-roses/3-blogstranslated/3.1-blog1/><b>3.1. </b>Build and manage your modern data stack using dbt and AWS Glue through dbt-glue, the new trusted dbt adapter
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/4-eventparticipated/ title="Events Participated" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/4-eventparticipated/><b>4. </b>Events Participated
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/4-eventparticipated/4.1-event1/ title="Event 1" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/4-eventparticipated/4.1-event1/><b>4.1. </b>Event 1
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/5-workshop/ title=Workshop class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/><b>5. </b>Workshop
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/5-workshop/5.1-workshop-overview/ title=Introduction class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.1-workshop-overview/><b>5.1. </b>Introduction
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/5-workshop/5.2-prerequiste/ title=Prerequiste class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.2-prerequiste/><b>5.2. </b>Prerequiste
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/5-workshop/5.3-ingestion/ title=Ingestion class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.3-ingestion/><b>5.3. </b>Ingestion
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/5-workshop/5.3-ingestion/5.3.1-docker-configuration/ title="Docker Configuration" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.3-ingestion/5.3.1-docker-configuration/><b>5.3.1 </b>Docker Configuration
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/5-workshop/5.3-ingestion/5.3.2-ingestion-pipeline/ title="Ingestion Pipeline" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.3-ingestion/5.3.2-ingestion-pipeline/><b>5.3.2 </b>Ingestion Pipeline
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/5-workshop/5.4-data-catalog/ title="Data Ingestion and Cataloging Pipeline" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.4-data-catalog/><b>5.4. </b>Data Ingestion and Cataloging Pipeline
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/5-workshop/5.4-data-catalog/5.4.1--data-lake/ title="Data Lake Storage (Amazon S3)" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.4-data-catalog/5.4.1--data-lake/><b>5.4.1 </b>Data Lake Storage (Amazon S3)
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/5-workshop/5.4-data-catalog/5.4.2-data-cataloging-pipeline/ title="Data Cataloging Pipeline" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.4-data-catalog/5.4.2-data-cataloging-pipeline/><b>5.4.2 </b>Data Cataloging Pipeline
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/5-workshop/5.5-analytics/ title="Analytics and Visualization" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.5-analytics/><b>5.5. </b>Analytics and Visualization
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/5-workshop/5.6-cleanup/ title="Clean up" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/5-workshop/5.6-cleanup/><b>5.6. </b>Clean up
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/6-self-evaluation/ title=Self-Assessment class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/6-self-evaluation/><b>6. </b>Self-Assessment
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/7-feedback/ title="Sharing & Feedback" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/7-feedback/><b>7. </b>Sharing & Feedback
+<i class="fas fa-check read-icon"></i></a></li></ul><section id=shortcuts><h3>More</h3><ul><li><a class=padding href=https://www.facebook.com/groups/awsstudygroupfcj/><i class='fab fa-facebook'></i> AWS Study Group</a></li></ul></section><section id=prefooter><hr><ul><li><a class=padding><i class="fas fa-language fa-fw"></i><div class=select-style><select id=select-language onchange="location=this.value"><option id=en value=https://roses19.github.io/fcj-workshop-roses/3-blogstranslated/3.1-blog1/ selected>English</option><option id=vi value=https://roses19.github.io/fcj-workshop-roses/vi/3-blogstranslated/3.1-blog1/>Tiếng Việt</option></select><svg id="Capa_1" xmlns:xlink="http://www.w3.org/1999/xlink" width="255" height="255" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255"><g><g id="arrow-drop-down"><polygon points="0,63.75 127.5,191.25 255,63.75"/></g></g></svg></div></a></li><li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li></ul></section><section id=footer><left><br><br><b>Last Updated</b><br><i><span id=lastUpdated style=color:orange></span>
+</i><script>const today=new Date,formattedDate=today.toLocaleDateString("en-GB");document.getElementById("lastUpdated").textContent=formattedDate</script></left><left><br><br><b>Team</b><br><i><a href=https://www.facebook.com/groups/660548818043427 style=color:orange>First Cloud Journey</a><br></i></left><script async defer src=https://buttons.github.io/buttons.js></script></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links><a href=https://roses19.github.io/fcj-workshop-roses/>Internship Report</a> > <a href=https://roses19.github.io/fcj-workshop-roses/3-blogstranslated/>Translated Blogs</a> > Build and manage your modern data stack using dbt and AWS Glue through dbt-glue, the new trusted dbt adapter</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#common-use-cases>Common use cases</a></li><li><a href=#how-dbt-and-dbt-glue-work>How dbt and dbt-glue work</a></li><li><a href=#example-use-case>Example use case</a></li><li><a href=#prerequisites>Prerequisites</a></li><li><a href=#detailed-steps>Detailed steps:</a></li><li><a href=#query-materialized-tables-through-athena>Query materialized tables through Athena</a></li><li><a href=#the-following-screenshot-shows-the-results-of-this-query>The following screenshot shows the results of this query.</a></li><li><a href=#clean-up>Clean up</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Build and manage your modern data stack using dbt and AWS Glue through dbt-glue, the new trusted dbt adapter</h1><p>Original blog:: <a href=https://aws.amazon.com/vi/blogs/big-data/build-and-manage-your-modern-data-stack-using-dbt-and-aws-glue-through-dbt-glue-the-new-trusted-dbt-adapter/>AWS Big Data Blog – dbt & AWS Glue</a></p><h2 id=introduction>Introduction</h2><p><strong>dbt</strong> is an open-source, SQL-first tool that allows you to write reusable and extensible data transformations using SQL and Python. dbt focuses on the transform layer in the ELT/ETL workflow on data warehouses and databases through corresponding adapters to enable extraction and loading of data.</p><p>This allows data engineers, data scientists, and analytics engineers to define business logic using SQL SELECT statements and eliminates the need to manually write DML and DDL statements. dbt also enables fast and collaborative analytics code deployment following software development best practices such as modularity, portability, CI/CD, and documentation.</p><p><strong>dbt</strong> is primarily used with data warehouses (such as Amazon Redshift), where customers want to separate transformation logic from storage and compute engines.</p><p>To meet the demand for cloud data lakes, AWS introduced the dbt-glue adapter in 2022 — an AWS Glue adapter for open-source dbt that is battle-tested, enabling data engineers to use dbt across both data lakes and data warehouses, paying only for the compute they need.</p><p><strong>Adapter dbt-glue</strong> extends dbt access to data lakes and allows running data transformation workloads on AWS Glue’s serverless Spark with ease. AWS continues to invest in dbt-glue to support additional requirements.</p><p>Today, we are pleased to announce that the dbt-glue adapter is now a trusted adapter based on our strategic collaboration with dbt Labs. Trusted adapters are adapters not maintained by <strong>dbt Labs</strong>, but adaptors that that dbt Lab is comfortable recommending to users for use in production.</p><p>The key capabilities of the dbt-glue adapter are as follows:</p><ul><li>Runs SQL as Spark SQL on AWS Glue interactive sessions.</li><li>Manages table definitions on the <strong>Amazon SageMaker Lakehouse Catalog</strong> with storage on Amazon S3.</li><li>Supports open table formats such as Apache Hudi, Delta Lake, and Apache Iceberg</li><li>Supports <strong>AWS Lake Formation permissions</strong> for fine-grained access control</li></ul><p>In addition to those capabilities, the dbt-glue adapter is designed to optimize resource utilization with several techniques on top of AWS Glue interactive sessions.</p><p>This post demonstrates how the dbt-glue adapter helps your workload, and how you can build a modern data stack using dbt and AWS Glue using the dbt-glue adapter.</p><h2 id=common-use-cases>Common use cases</h2><p><strong>1. A central analytics team at a large corporation</strong></p><p>A central analytics team needs to track operational performance. They ingest application logs into Parquet tables in the raw layer of an S3-based data lake. They also extract structured data from operational systems.</p><p>For example, organizational schema and cost data for different components are stored in the raw layer using Iceberg to preserve the original schema for multiple data access patterns.</p><p>The team uses dbt-glue to build gold models optimized for BI — combining technical logs with billing data and organizing metrics by business unit. Iceberg supports warehouse-style modeling for high-performance BI analytics. Combining Iceberg and dbt-glue enables building data models that are ready for consumption.</p><p><strong>2. Building GDPR-compliant data products</strong></p><p>An analytics team at a European company operates a data lake on S3 and needs to build new data products to enrich healthcare data, which requires GDPR compliance such as the right to be forgotten and data deletion. They use Iceberg to meet these requirements and dbt to model data on the data lake because dbt-glue supports Iceberg and simplifies the use of this storage format.</p><h2 id=how-dbt-and-dbt-glue-work>How dbt and dbt-glue work</h2><ul><li><p>The following are key dbt features::</p><ul><li><strong>Project</strong> – A dbt project enforces a top-level structure on the staging, models, permissions, and adapters. A project can be checked into a GitHub repo for version control.</li><li><strong>SQL</strong> – dbt relies on SQL select statements for defining data transformation logic. Instead of raw SQL, dbt offers templatized SQL (using Jinja) that allows code modularity. Instead of having to copy/paste SQL in multiple places, data engineers can define modular transforms and call those from other places within the project. Having a modular pipeline helps data engineers collaborate on the same project.</li><li><strong>Models</strong> – dbt models are primarily written as a SELECT statement and saved as a .sql file. Data engineers define dbt models for their data representations.</li><li><strong>Materializations</strong> – Materializations are strategies for persisting dbt models in a warehouse. There are five types of materializations built into dbt: table, view, incremental, ephemeral, and materialized view.</li><li><strong>Data lineage</strong> – dbt tracks data lineage, allowing you to understand the origin of data and how it flows through different transformations. dbt also supports impact analysis, which helps identify the downstream effects of changes.</li></ul></li><li><p>The high-level data flow is as follows:</p><ol><li><p>Data engineers ingest data from data sources to raw tables and define table definitions for the raw tables.</p></li><li><p>Data engineers write dbt models with templatized SQL.</p></li><li><p>The dbt adapter converts dbt models to SQL statements compatible in a data warehouse.</p></li><li><p>The data warehouse runs the SQL statements to create intermediate tables or final tables, views, or materialized views.</p></li></ol></li></ul><p>The following diagram illustrates the architecture.
+<img alt=architecture src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image.png></p><ul><li><p>dbt-glue works with the following steps:</p><ol><li>The dbt-glue adapter converts dbt models to SQL statements compatible in Spark SQL.</li></ol><p>2.AWS Glue interactive sessions run the SQL statements to create intermediate tables or final tables, views, or materialized views.</p><ol start=3><li><p>dbt-glue supports: <code>csv</code>, <code>parquet</code>, <code>hudi</code>, <code>delta</code>, <code>iceberg</code>.</p></li><li><p>On the dbt-glue adapter, table or incremental are commonly used for materializations at the destination. There are three strategies for incremental materialization. The merge strategy requires <code>hudi</code>, <code>delta</code>, or <code>iceberg</code>. With the other two strategies, <code>append</code> and <code>insert_overwrite</code>, you can use any of the formats above.</p></li></ol></li></ul><p>The following diagram illustrates this architecture.
+<img alt="diagram illustrates" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-1.png></p><h2 id=example-use-case>Example use case</h2><p>In this post, we use the data from the <a href=https://registry.opendata.aws/nyc-tlc-trip-records-pds/><strong>New York City Taxi Records</strong></a> dataset. This dataset is available in the <a href=https://registry.opendata.aws/>Open Data on AWS (RODA)</a>which is a repository containing public datasets from AWS resources. The raw Parquet table records in this dataset stores trip records.</p><ul><li>The objective is to create the following three tables, which contain metrics based on the raw table:<ul><li><strong>silver_avg_metrics</strong> – Basic metrics based on NYC Taxi Open Data for the year 2016</li><li><strong>gold_passengers_metrics</strong> – Metrics per passenger based on the silver metrics table</li><li><strong>gold_cost_metrics</strong> – Metrics per cost based on the silver metrics table</li></ul></li></ul><p>The final goal is to create two well-designed gold tables that store already aggregated results in Iceberg format for ad hoc queries through <strong>Amazon Athena</strong>.</p><h2 id=prerequisites>Prerequisites</h2><ul><li><p>Prepare an <strong>IAM Role</strong> with permissions to run <strong>Glue interactive session</strong> and <strong>dbt-glue</strong></p></li><li><p>Create a Glue database and tables for the Taxi dataset</p></li><li><p>Create an S3 bucket for output data</p></li><li><p>Configure Athena to explore the data</p></li><li><p>Use CloudFormation to deploy all infrastructure quickly</p></li></ul><p>With these prerequisites, we simulate the situation that data engineers have already ingested data from data sources to raw tables, and defined table definitions for the raw tables.</p><p>For ease of use, we prepared a CloudFormation template. This template deploys all the required infrastructure. To create these resources, choose Launch Stack in the <code>us-east-1</code> RegionRegion.</p><h2 id=detailed-steps>Detailed steps:</h2><p><strong>1. Install dbt, the dbt CLI</strong> : <code>$ pip3 install --no-cache-dir dbt-core </code><strong>2. Install the dbt-glue adapter</strong> :<code>$ pip3 install --no-cache-dir dbt-glue</code>
+<strong>3. Initialize a dbt project with</strong> with <code>$ dbt init</code> and enter the name <code>dbt_glue_demo</code>. Choose the <code>glue</code>database. A new empty project will be created:</p><pre tabindex=0><code>$ cd dbt_glue_demo 
+$ tree .
+.
+├── README.md
+├── analyses
+├── dbt_project.yml
+├── macros
+├── models
+│   └── example
+│       ├── my_first_dbt_model.sql
+│       ├── my_second_dbt_model.sql
+│       └── schema.yml
+├── seeds
+├── snapshots
+└── tests
+</code></pre><p><strong>4. Create a source</strong>: In <code>models/</code>create the file <code>source_tables.yml</code>:</p><pre tabindex=0><code>version: 2
+
+sources:
+  - name: data_source
+    schema: nyctaxi
+
+    tables:
+      - name: records
+</code></pre><p>This source definition corresponds to the AWS Glue table <code>nyctaxi.records</code>, which we created in the CloudFormation stack.</p><p><strong>5. Create models</strong></p><p>In this step, we create a dbt model that represents the average values for trip duration, passenger count, trip distance, and total amount of charges. Complete the following steps:</p><ul><li>Create the <strong>silver</strong> folder under <strong>models</strong>, then create the file <strong>silver_avg_metrics.sql</strong> with the following content:</li></ul><pre tabindex=0><code>WITH source_avg as ( 
+    SELECT avg((CAST(dropoff_datetime as LONG) - CAST(pickup_datetime as LONG))/60) as avg_duration 
+    , avg(passenger_count) as avg_passenger_count 
+    , avg(trip_distance) as avg_trip_distance 
+    , avg(total_amount) as avg_total_amount
+    , year
+    , month 
+    , type
+    FROM {{ source(&#39;data_source&#39;, &#39;records&#39;) }} 
+    WHERE year = &#34;2016&#34;
+    AND dropoff_datetime is not null 
+    GROUP BY year, month, type
+) 
+SELECT *
+FROM source_avg
+</code></pre><ul><li>Create the file models/silver/schema.yml with the following contents:</li></ul><pre tabindex=0><code>version: 2
+
+models:
+  - name: silver_avg_metrics
+    description: This table has basic metrics based on NYC Taxi Open Data for the year 2016
+
+    columns:
+      - name: avg_duration
+        description: The average duration of a NYC Taxi trip
+
+      - name: avg_passenger_count
+        description: The average number of passenger per NYC Taxi trip
+
+      - name: avg_trip_distance
+        description: The average NYC Taxi trip distance
+
+      - name: avg_total_amount
+        description: The avarage amount of a NYC Taxi trip
+
+      - name: year
+        description: The year of the NYC Taxi trip
+
+      - name: month
+        description: The month of the NYC Taxi trip 
+
+      - name: type
+        description: The type of the NYC Taxi 
+</code></pre><ul><li>Create a <strong>gold</strong> folder under <strong>models</strong>, and inside it create the file <strong>gold_cost_metrics.sql</strong>:</li></ul><pre tabindex=0><code>{{ config(
+    materialized=&#39;incremental&#39;,
+    incremental_strategy=&#39;merge&#39;,
+    unique_key=[&#34;year&#34;, &#34;month&#34;, &#34;type&#34;],
+    file_format=&#39;iceberg&#39;,
+    iceberg_expire_snapshots=&#39;False&#39;,
+    table_properties={&#39;format-version&#39;: &#39;2&#39;}
+) }}
+SELECT (avg_total_amount/avg_trip_distance) as avg_cost_per_distance
+, (avg_total_amount/avg_duration) as avg_cost_per_minute
+, year
+, month 
+, type 
+FROM {{ ref(&#39;silver_avg_metrics&#39;) }}
+</code></pre><ul><li>Create the file <strong>models/gold/gold_passengers_metrics.sql</strong> with the following contents:</li></ul><pre tabindex=0><code>{{ config(
+    materialized=&#39;incremental&#39;,
+    incremental_strategy=&#39;merge&#39;,
+    unique_key=[&#34;year&#34;, &#34;month&#34;, &#34;type&#34;],
+    file_format=&#39;iceberg&#39;,
+    iceberg_expire_snapshots=&#39;False&#39;,
+    table_properties={&#39;format-version&#39;: &#39;2&#39;}
+) }}
+SELECT (avg_total_amount/avg_passenger_count) as avg_cost_per_passenger
+, (avg_duration/avg_passenger_count) as avg_duration_per_passenger
+, (avg_trip_distance/avg_passenger_count) as avg_trip_distance_per_passenger
+, year
+, month 
+, type 
+FROM {{ ref(&#39;silver_avg_metrics&#39;) }}
+</code></pre><ul><li>Create the file models/gold/schema.yml with the following contents:</li></ul><pre tabindex=0><code>version: 2
+
+models:
+  - name: gold_cost_metrics
+    description: This table has metrics per cost based on NYC Taxi Open Data
+
+    columns:
+      - name: avg_cost_per_distance
+        description: The average cost per distance of a NYC Taxi trip
+
+      - name: avg_cost_per_minute
+        description: The average cost per minute of a NYC Taxi trip
+
+      - name: year
+        description: The year of the NYC Taxi trip
+
+      - name: month
+        description: The month of the NYC Taxi trip
+
+      - name: type
+        description: The type of the NYC Taxi
+
+  - name: gold_passengers_metrics
+    description: This table has metrics per passenger based on NYC Taxi Open Data
+
+    columns:
+      - name: avg_cost_per_passenger
+        description: The average cost per passenger for a NYC Taxi trip
+
+      - name: avg_duration_per_passenger
+        description: The average number of passenger per NYC Taxi trip
+
+      - name: avg_trip_distance_per_passenger
+        description: The average NYC Taxi trip distance
+
+      - name: year
+        description: The year of the NYC Taxi trip
+
+      - name: month
+        description: The month of the NYC Taxi trip 
+
+      - name: type
+        description: The type of the NYC Taxi
+</code></pre><ul><li>Remove the <strong>models/example/</strong> folder, because it’s just an example created in the <code>dbt init</code> command.</li></ul><p><strong>6. Configure the dbt project</strong></p><p>-dbt_project.yml is a key configuration file for dbt projects. It contains the following code:</p><pre tabindex=0><code>models:
+  dbt_glue_demo:
+    # Config indicated by + and applies to all files under models/example/
+    example:
+      +materialized: view
+</code></pre><ul><li>We configure <strong>dbt_project.yml</strong> to replace the preceding code with the following:</li></ul><pre tabindex=0><code>models:
+  dbt_glue_demo:
+    silver:
+      +materialized: table
+</code></pre><p>This is because that we want to materialize the models under <strong>silver</strong> as Parquet tables.
+<strong>7. Configure a dbt profile</strong></p><p><strong>dbt profile</strong> is a configuration that specifies how to connect to a particular database. The profiles are defined in the <strong>profiles.yml</strong> file within a dbt project.</p><p>Complete the following steps to configure a dbt profile:</p><ol><li><p>Create the <code>profiles</code> directory.</p></li><li><p>Create the file <code>profiles/profiles.yml</code> with the following contents:</p><pre tabindex=0><code>dbt_glue_demo:
+target: dev
+outputs:
+    dev:
+    type: glue
+    query-comment: demo-nyctaxi
+    role_arn: &#34;{{ env_var(&#39;DBT_ROLE_ARN&#39;) }}&#34;
+    region: us-east-1
+    workers: 5
+    worker_type: G.1X
+    schema: &#34;dbt_glue_demo_nyc_metrics&#34;
+    database: &#34;dbt_glue_demo_nyc_metrics&#34;
+    session_provisioning_timeout_in_seconds: 120
+    location: &#34;{{ env_var(&#39;DBT_S3_LOCATION&#39;) }}&#34;
+</code></pre></li><li><p>Create the <code>profiles/iceberg/</code> directory..</p></li><li><p>Create the file <code>profiles/iceberg/profiles.yml</code> with the following contents:</p><pre tabindex=0><code>dbt_glue_demo:
+target: dev
+outputs:
+    dev:
+        type: glue
+        query-comment: demo-nyctaxi
+        role_arn: &#34;{{ env_var(&#39;DBT_ROLE_ARN&#39;) }}&#34;
+        region: us-east-1
+        workers: 5
+        worker_type: G.1X
+        schema: &#34;dbt_glue_demo_nyc_metrics&#34;
+        database: &#34;dbt_glue_demo_nyc_metrics&#34;
+        session_provisioning_timeout_in_seconds: 120
+        location: &#34;{{ env_var(&#39;DBT_S3_LOCATION&#39;) }}&#34;
+        datalake_formats: &#34;iceberg&#34;
+        conf: spark.sql.catalog.glue_catalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql catalog.glue_catalog.warehouse={{ env_var(&#39;DBT_S3_LOCATION&#39;) }}warehouse/ --conf spark.sql.catalog.glue_catalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.glue_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+</code></pre></li></ol><p>The last two lines are added for setting Iceberg configurations on AWS Glue interactive sessions.</p><p><strong>8. Run the dbt project</strong></p><p>Run the dbt project</p><ol><li>To run the project dbt, you should be in the project folder: ``$ cd dbt_glue_demo```</li><li>The project requires you to set environment variables in order to run on the AWS account:</li></ol><pre tabindex=0><code>$ export DBT_ROLE_ARN=&#34;arn:aws:iam::$(aws sts get-caller-identity --query &#34;Account&#34; --output text):role/GlueInteractiveSessionRole&#34;
+$ export DBT_S3_LOCATION=&#34;s3://aws-dbt-glue-datalake-$(aws sts get-caller-identity --query &#34;Account&#34; --output text)-us-east-1&#34;
+</code></pre><ol start=3><li>Make sure the profile is set up correctly from the command line:</li></ol><pre tabindex=0><code>$ dbt debug --profiles-dir profiles
+...
+05:34:22 Connection test: [OK connection ok]
+05:34:22 All checks passed!
+</code></pre><p>If you see any failures, check if you provided the correct IAM role ARN and S3 location in Step 2.
+4. Run the models with the following code:</p><pre tabindex=0><code>$ dbt run -m silver --profiles-dir profiles
+$ dbt run -m gold --profiles-dir profiles/iceberg/
+</code></pre><p>Now the tables are successfully created in the SageMaker Lakehouse Catalog, and the data is materialized in the Amazon S3 location.</p><p>You can verify those tables by opening the AWS Glue console, choosing <strong>Databases</strong> in the navigation pane, and opening <code>dbt_glue_demo_nyc_metrics</code>.
+<img alt="check db" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-2.png></p><h2 id=query-materialized-tables-through-athena>Query materialized tables through Athena</h2><p>Let’s query the target table using Athena to verify the materialized tables. Complete the following steps:</p><ol><li><p>On the Athena console, switch the workgroup to <code>athena-dbt-glue-aws-blog</code>.</p></li><li><p>If the workgroup <code>athena-dbt-glue-aws-blog</code> settings dialog box appears, choose Acknowledge.</p></li><li><p>Use the following query to explore the metrics created by the dbt project:</p></li></ol><pre tabindex=0><code>SELECT cm.avg_cost_per_minute
+    , cm.avg_cost_per_distance
+    , pm.avg_cost_per_passenger
+    , cm.year
+    , cm.month
+    , cm.type
+FROM &#34;dbt_glue_demo_nyc_metrics&#34;.&#34;gold_passengers_metrics&#34; pm
+LEFT JOIN &#34;dbt_glue_demo_nyc_metrics&#34;.&#34;gold_cost_metrics&#34; cm
+    ON cm.type = pm.type
+    AND cm.year = pm.year
+    AND cm.month = pm.month
+WHERE cm.type = &#39;yellow&#39;
+    AND cm.year = &#39;2016&#39;
+    AND cm.month = &#39;6&#39;
+</code></pre><p>The following screenshot shows the results of this query.
+<img alt=result-query src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-3.png></p><h2 id=the-following-screenshot-shows-the-results-of-this-query>The following screenshot shows the results of this query.</h2><p>Complete the following steps to review your documentation:</p><ol><li>Generate the following documentation for the project:</li></ol><pre tabindex=0><code>$ dbt docs generate --profiles-dir profiles/iceberg
+11:41:51  Running with dbt=1.7.1
+11:41:51  Registered adapter: glue=1.7.1
+11:41:51  Unable to do partial parsing because profile has changed
+11:41:52  Found 3 models, 1 source, 0 exposures, 0 metrics, 478 macros, 0 groups, 0 semantic models
+11:41:52  
+11:41:53  Concurrency: 1 threads (target=&#39;dev&#39;)
+11:41:53  
+11:41:53  Building catalog
+11:43:32  Catalog written to /Users/username/Documents/workspace/dbt_glue_demo/target/catalog.json
+</code></pre><ol start=2><li><p>Run the following command to open the documentation on your browser:
+<code>$ dbt docs serve --profiles-dir profiles/iceberg</code>
+<img alt="open doc" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-4.png></p></li><li><p>In the navigation pane, choose <code>gold_cost_metrics</code> under <code>dbt_glue_demo/models/gold</code>.
+You can see the detailed view of the model <code>gold_cost_metrics</code>, as shown in the following screenshot.
+<img alt=model src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-5.png></p></li><li><p>To see the lineage graph, choose the circle icon at the bottom right.</p></li></ol><p><img alt="circle icon" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-6.png></p><h2 id=clean-up>Clean up</h2><p>To clean up your environment, complete the following steps:</p><ol><li><p>Delete the database created by dbt:
+<code>$ aws glue delete-database —name dbt_glue_demo_nyc_metrics</code></p></li><li><p>Delete all generated data:</p></li></ol><pre tabindex=0><code>$ aws s3 rm s3://aws-dbt-glue-datalake-$(aws sts get-caller-identity —query &#34;Account&#34; —output text)-us-east-1/ —recursive
+$ aws s3 rm s3://aws-athena-dbt-glue-query-results-$(aws sts get-caller-identity —query &#34;Account&#34; —output text)-us-east-1/ —recursive
+</code></pre><ol start=3><li>Delete the CloudFormation stack:
+<code>$ aws cloudformation delete-stack —stack-name dbt-demo</code></li></ol><h2 id=conclusion>Conclusion</h2><p>This post demonstrated how the dbt-glue adapter helps your workload, and how you can build a modern data stack using dbt and AWS Glue using the dbt-glue adapter. You learned the end-to-end operations and data flow for data engineers to build and manage a data stack using dbt and the dbt-glue adapter.</p><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=https://roses19.github.io/fcj-workshop-roses/3-blogstranslated/ title="Translated Blogs"><i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=https://roses19.github.io/fcj-workshop-roses/4-eventparticipated/ title="Events Participated" style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=https://roses19.github.io/fcj-workshop-roses/js/clipboard.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/perfect-scrollbar.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/perfect-scrollbar.jquery.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/jquery.sticky.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/featherlight.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/highlight.pack.js?1768447978></script><script>hljs.initHighlightingOnLoad()</script><script src=https://roses19.github.io/fcj-workshop-roses/js/modernizr.custom-3.6.0.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/learn.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/hugo-learn.js?1768447978></script><link href=https://roses19.github.io/fcj-workshop-roses/mermaid/mermaid.css?1768447978 rel=stylesheet><script src=https://roses19.github.io/fcj-workshop-roses/mermaid/mermaid.js?1768447978></script><script>mermaid.initialize({startOnLoad:!0})</script><script>(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,(e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date),(i=t.createElement(n),a=t.getElementsByTagName(n)[0]),i.async=1,i.src=s,a.parentNode.insertBefore(i,a)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-158079754-2","auto"),ga("send","pageview")</script></body></html>

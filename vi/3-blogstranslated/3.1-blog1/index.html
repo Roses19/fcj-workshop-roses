@@ -1,0 +1,257 @@
+<!doctype html><html lang=vi class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.134.3"><meta name=description content><meta name=author content="nguyenthihong112000@gmail.com"><link rel=icon href=https://roses19.github.io/fcj-workshop-roses/images/favicon.png type=image/png><title>Xây dựng và quản lý nền tảng dữ liệu hiện đại bằng dbt và AWS Glue thông qua dbt-glue – adapter dbt mới :: Báo cáo thực tập</title>
+<link href=https://roses19.github.io/fcj-workshop-roses/css/nucleus.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/fontawesome-all.min.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/hybrid.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/featherlight.min.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/perfect-scrollbar.min.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/auto-complete.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/atom-one-dark-reasonable.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/theme.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/hugo-theme.css?1768447978 rel=stylesheet><link href=https://roses19.github.io/fcj-workshop-roses/css/theme-workshop.css?1768447978 rel=stylesheet><script src=https://roses19.github.io/fcj-workshop-roses/js/jquery-3.3.1.min.js?1768447978></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=https://roses19.github.io/fcj-workshop-roses/vi/3-blogstranslated/3.1-blog1/><nav id=sidebar class=showVisitedLinks><div id=header-wrapper><div id=header><a id=logo href=https://roses19.github.io/fcj-workshop-roses/><svg id="Layer_1" data-name="Layer 1" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#fff;fill-rule:evenodd}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09 10.85a4.7 4.7.0 00.19 1.48 7.73 7.73.0 00.54 1.19.77.77.0 01.12.38.64.64.0 01-.32.49l-1 .7a.83.83.0 01-.44.15.69.69.0 01-.49-.23 3.8 3.8.0 01-.6-.77q-.25-.42-.51-1a6.14 6.14.0 01-4.89 2.3 4.54 4.54.0 01-3.32-1.19 4.27 4.27.0 01-1.22-3.2 4.28 4.28.0 011.46-3.4A6.06 6.06.0 017.69 6.46a12.47 12.47.0 011.76.13q.92.13 1.91.36V5.73a3.65 3.65.0 00-.79-2.66A3.81 3.81.0 007.86 2.3a7.71 7.71.0 00-1.79.22 12.78 12.78.0 00-1.79.57 4.55 4.55.0 01-.58.22h-.26q-.35.0-.35-.52V2a1.09 1.09.0 01.12-.58 1.2 1.2.0 01.47-.35A10.88 10.88.0 015.77.32 10.19 10.19.0 018.36.0a6 6 0 014.35 1.35 5.49 5.49.0 011.38 4.09zM7.34 13.38a5.36 5.36.0 001.72-.31A3.63 3.63.0 0010.63 12 2.62 2.62.0 0011.19 11a5.63 5.63.0 00.16-1.44v-.7a14.35 14.35.0 00-1.53-.28 12.37 12.37.0 00-1.56-.1 3.84 3.84.0 00-2.47.67A2.34 2.34.0 005 11a2.35 2.35.0 00.61 1.76A2.4 2.4.0 007.34 13.38zm13.35 1.8a1 1 0 01-.64-.16 1.3 1.3.0 01-.35-.65L15.81 1.51a3 3 0 01-.15-.67.36.36.0 01.41-.41H17.7a1 1 0 01.65.16 1.4 1.4.0 01.33.65l2.79 11 2.59-11A1.17 1.17.0 0124.39.6a1.1 1.1.0 01.67-.16H26.4a1.1 1.1.0 01.67.16 1.17 1.17.0 01.32.65L30 12.39 32.88 1.25A1.39 1.39.0 0133.22.6a1 1 0 01.65-.16h1.54a.36.36.0 01.41.41 1.36 1.36.0 010 .26 3.64 3.64.0 01-.12.41l-4 12.86a1.3 1.3.0 01-.35.65 1 1 0 01-.64.16H29.25a1 1 0 01-.67-.17 1.26 1.26.0 01-.32-.67L25.67 3.64l-2.56 10.7a1.26 1.26.0 01-.32.67 1 1 0 01-.67.17zm21.36.44a11.28 11.28.0 01-2.56-.29 7.44 7.44.0 01-1.92-.67 1 1 0 01-.61-.93v-.84q0-.52.38-.52a.9.9.0 01.31.06l.42.17a8.77 8.77.0 001.83.58 9.78 9.78.0 002 .2 4.48 4.48.0 002.43-.55 1.76 1.76.0 00.86-1.57 1.61 1.61.0 00-.45-1.16A4.29 4.29.0 0043 9.22l-2.41-.76A5.15 5.15.0 0138 6.78a3.94 3.94.0 01-.83-2.41 3.7 3.7.0 01.45-1.85 4.47 4.47.0 011.19-1.37 5.27 5.27.0 011.7-.86A7.4 7.4.0 0142.6.0a8.87 8.87.0 011.12.07q.57.07 1.08.19t.95.26a4.27 4.27.0 01.7.29 1.59 1.59.0 01.49.41.94.94.0 01.15.55v.79q0 .52-.38.52a1.76 1.76.0 01-.64-.2 7.74 7.74.0 00-3.2-.64 4.37 4.37.0 00-2.21.47 1.6 1.6.0 00-.79 1.48 1.58 1.58.0 00.49 1.18 4.94 4.94.0 001.83.92L44.55 7a5.08 5.08.0 012.57 1.6A3.76 3.76.0 0147.9 11a4.21 4.21.0 01-.44 1.93 4.4 4.4.0 01-1.21 1.47 5.43 5.43.0 01-1.85.93A8.25 8.25.0 0142.05 15.62z"/><path class="cls-2" d="M45.19 23.81C39.72 27.85 31.78 30 25 30A36.64 36.64.0 01.22 20.57c-.51-.46-.06-1.09.56-.74A49.78 49.78.0 0025.53 26.4 49.23 49.23.0 0044.4 22.53C45.32 22.14 46.1 23.14 45.19 23.81z"/><path class="cls-2" d="M47.47 21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74 3.13-2.2 8.27-1.57 8.86-.83s-.16 5.89-3.09 8.35c-.45.38-.88.18-.68-.32C46.69 25.8 48.17 22.11 47.47 21.21z"/></svg></a></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
+<input data-search-input id=search-by type=search placeholder=Search...>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=https://roses19.github.io/fcj-workshop-roses/js/lunr.min.js?1768447978></script><script type=text/javascript src=https://roses19.github.io/fcj-workshop-roses/js/auto-complete.js?1768447978></script><script type=text/javascript>var baseurl="https://roses19.github.io/fcj-workshop-roses//vi"</script><script type=text/javascript src=https://roses19.github.io/fcj-workshop-roses/js/search.js?1768447978></script></div><div class=highlightable><ul class=topics><li data-nav-id=/vi/1-worklog/ title="Nhật ký công việc" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/1-worklog/><b>1. </b>Nhật ký công việc
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/vi/1-worklog/1.1-week1/ title="Worklog Tuần 1" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/1-worklog/1.1-week1/><b>1.1. </b>Worklog Tuần 1
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/1-worklog/1.2-week2/ title="Worklog Tuần 2" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/1-worklog/1.2-week2/><b>1.2. </b>Worklog Tuần 2
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/1-worklog/1.3-week3/ title="Worklog Tuần 3" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/1-worklog/1.3-week3/><b>1.3. </b>Worklog Tuần 3
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/1-worklog/1.4-week4/ title="Worklog Tuần 4" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/1-worklog/1.4-week4/><b>1.4. </b>Worklog Tuần 4
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/1-worklog/1.5-week5/ title="Worklog Tuần 5" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/1-worklog/1.5-week5/><b>1.5. </b>Worklog Tuần 5
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/vi/2-proposal/ title="Bản đề xuất" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/2-proposal/><b>2. </b>Bản đề xuất
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/3-blogstranslated/ title="Các bài blogs đã dịch" class="dd-item
+parent"><a href=https://roses19.github.io/fcj-workshop-roses/vi/3-blogstranslated/><b>3. </b>Các bài blogs đã dịch
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/vi/3-blogstranslated/3.1-blog1/ title="Xây dựng và quản lý nền tảng dữ liệu hiện đại bằng dbt và AWS Glue thông qua dbt-glue – adapter dbt mới" class="dd-item
+active"><a href=https://roses19.github.io/fcj-workshop-roses/vi/3-blogstranslated/3.1-blog1/><b>3.1. </b>Xây dựng và quản lý nền tảng dữ liệu hiện đại bằng dbt và AWS Glue thông qua dbt-glue – adapter dbt mới
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/vi/4-eventparticipated/ title="Các events đã tham gia" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/4-eventparticipated/><b>4. </b>Các events đã tham gia
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/vi/4-eventparticipated/4.1-event1/ title="Event 1" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/4-eventparticipated/4.1-event1/><b>4.1. </b>Event 1
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/vi/5-workshop/ title=Workshop class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/><b>5. </b>Workshop
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/vi/5-workshop/5.1-workshop-overview/ title="Giới thiệu" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.1-workshop-overview/><b>5.1. </b>Giới thiệu
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/5-workshop/5.2-prerequiste/ title="Các bước chuẩn bị" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.2-prerequiste/><b>5.2. </b>Các bước chuẩn bị
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/5-workshop/5.3-ingestion/ title="Thu thập dữ liệu" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.3-ingestion/><b>5.3. </b>Thu thập dữ liệu
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/vi/5-workshop/5.3-ingestion/5.3.1-docker-configuration/ title="Cấu hình Docker " class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.3-ingestion/5.3.1-docker-configuration/><b>5.3.1 </b>Cấu hình Docker
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/5-workshop/5.3-ingestion/5.3.2-ingestion-pipeline/ title="Quá trình thu thập dữ liệu" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.3-ingestion/5.3.2-ingestion-pipeline/><b>5.3.2 </b>Quá trình thu thập dữ liệu
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/vi/5-workshop/5.4-data-catalog/ title="Nạp dữ liệu vào Data Lake và Quản lý Metadata" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.4-data-catalog/><b>5.4. </b>Nạp dữ liệu vào Data Lake và Quản lý Metadata
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/vi/5-workshop/5.4-data-catalog/5.4.1--data-lake/ title="Lưu trữ vào Data Lake (Amazon S3)" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.4-data-catalog/5.4.1--data-lake/><b>5.4.1 </b>Lưu trữ vào Data Lake (Amazon S3)
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/5-workshop/5.4-data-catalog/5.4.2-data-cataloging-pipeline/ title="Pipeline quản lý danh mục dữ liệu" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.4-data-catalog/5.4.2-data-cataloging-pipeline/><b>5.4.2 </b>Pipeline quản lý danh mục dữ liệu
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/vi/5-workshop/5.5-analytics/ title="Truy vấn dữ liệu và trực quan hóa" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.5-analytics/><b>5.5 </b>Truy vấn dữ liệu và trực quan hóa
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/5-workshop/5.6-cleanup/ title="Dọn dẹp tài nguyên" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/5-workshop/5.6-cleanup/><b>5.6. </b>Dọn dẹp tài nguyên
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/vi/6-self-evaluation/ title="Tự đánh giá" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/6-self-evaluation/><b>6. </b>Tự đánh giá
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/vi/7-feedback/ title="Chia sẻ, đóng góp ý kiến" class=dd-item><a href=https://roses19.github.io/fcj-workshop-roses/vi/7-feedback/><b>7. </b>Chia sẻ, đóng góp ý kiến
+<i class="fas fa-check read-icon"></i></a></li></ul><section id=shortcuts><h3>More</h3><ul><li><a class=padding href=https://www.facebook.com/groups/awsstudygroupfcj/><i class='fab fa-facebook'></i> AWS Study Group</a></li></ul></section><section id=prefooter><hr><ul><li><a class=padding><i class="fas fa-language fa-fw"></i><div class=select-style><select id=select-language onchange="location=this.value"><option id=en value=https://roses19.github.io/fcj-workshop-roses/3-blogstranslated/3.1-blog1/>English</option><option id=vi value=https://roses19.github.io/fcj-workshop-roses/vi/3-blogstranslated/3.1-blog1/ selected>Tiếng Việt</option></select><svg id="Capa_1" xmlns:xlink="http://www.w3.org/1999/xlink" width="255" height="255" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255"><g><g id="arrow-drop-down"><polygon points="0,63.75 127.5,191.25 255,63.75"/></g></g></svg></div></a></li><li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li></ul></section><section id=footer><left><br><br><b>Last Updated</b><br><i><span id=lastUpdated style=color:orange></span>
+</i><script>const today=new Date,formattedDate=today.toLocaleDateString("en-GB");document.getElementById("lastUpdated").textContent=formattedDate</script></left><left><br><br><b>Team</b><br><i><a href=https://www.facebook.com/groups/660548818043427 style=color:orange>First Cloud Journey</a><br></i></left><script async defer src=https://buttons.github.io/buttons.js></script></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links><a href=https://roses19.github.io/fcj-workshop-roses/vi/>Báo cáo thực tập</a> > <a href=https://roses19.github.io/fcj-workshop-roses/vi/3-blogstranslated/>Các bài blogs đã dịch</a> > Xây dựng và quản lý nền tảng dữ liệu hiện đại bằng dbt và AWS Glue thông qua dbt-glue – adapter dbt mới</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#giới-thiệu>Giới thiệu</a></li><li><a href=#trường-hợp-sử-dụng-phổ-biến>Trường hợp sử dụng phổ biến</a></li><li><a href=#cách-hoạt-động-của-dbt-và-dbt-glue>Cách hoạt động của dbt và dbt-glue</a></li><li><a href=#trường-hợp-ví-dụ>Trường hợp ví dụ</a></li><li><a href=#các-bước-chuẩn-bị>Các bước chuẩn bị</a></li><li><a href=#các-bước-làm-chi-tiết>Các bước làm chi tiết:</a></li><li><a href=#truy-vấn-các-bảng-được-cụ-thể-hóa-thông-qua-athena>Truy vấn các bảng được cụ thể hóa thông qua Athena</a></li><li><a href=#xem-lại-tài-liệu-dbt>Xem lại tài liệu dbt</a></li><li><a href=#dọn-dẹp>Dọn dẹp</a></li><li><a href=#kết-luận>Kết luận</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Xây dựng và quản lý nền tảng dữ liệu hiện đại bằng dbt và AWS Glue thông qua dbt-glue – adapter dbt mới</h1><p>Bài blog gốc: <a href=https://aws.amazon.com/vi/blogs/big-data/build-and-manage-your-modern-data-stack-using-dbt-and-aws-glue-through-dbt-glue-the-new-trusted-dbt-adapter/>AWS Big Data Blog – dbt & AWS Glue</a></p><h2 id=giới-thiệu>Giới thiệu</h2><p><strong>dbt</strong> là một công cụ mã nguồn mở, lấy SQL làm trung tâm, cho phép bạn viết các phép biến đổi dữ liệu có thể tái sử dụng và mở rộng bằng Python và SQL. dbt tập trung vào lớp biến đổi (transform) trong quy trình ELT/ETL trên các data warehouse và database thông qua các adapter tương ứng để đạt được khả năng trích xuất và tải dữ liệu.</p><p>Việc này giúp data engineer, data scientist và analytics engineer định nghĩa logic nghiệp vụ bằng các câu lệnh SQL SELECT và loại bỏ nhu cầu viết thủ công các câu lệnh DML, DDL. dbt cũng giúp deploy code analytics nhanh và collaborative theo best practices của phát triển phần mềm như tính mô-đun, khả năng di chuyển, CI/CD cùng với tài liệu hóa.</p><p><strong>dbt</strong> được sử dụng chủ yếu với các data warehouse (như Amazon Redshift) nơi mà khách hàng muốn tách biệt logic biến đổi dữ liệu khỏi storage và engine.</p><p>Vì nhu cầu mở rộng sang cloud data lake, AWS đã giới thiệu adapter dbt-glue vào năm 2022 — một adapter AWS Glue cho dbt mã nguồn mở, đã được kiểm chứng (battle-tested), giúp data engineer dùng dbt cho cả data lake lẫn data warehouse, trả phí chỉ cho compute họ cần.
+<strong>Adapter dbt-glue</strong> mở rộng quyền truy cập cho người dùng dbt tới data lake, và cho phép chạy workloads biến đổi dữ liệu trên cloud với serverless Spark của AWS Glue dễ dàng. AWS tiếp tục đầu tư vào dbt-glue để hỗ trợ thêm nhiều yêu cầu khác.</p><p>Ngày nay, adapter dbt-glue đã trở thành một adapter đáng tin cậy dựa trên sự hợp tác chiến lược với <strong>dbt Labs</strong>. Adapter đáng tin cậy là adapter không do dbt Labs duy trì nhưng được dbt Labs khuyến nghị dùng ở môi trường production.</p><p>Các tính năng chính của adapter dbt-glue:</p><ul><li>Chạy SQL dưới dạng Spark SQL trên phiên tương tác của AWS Glue.</li><li>Quản lý định nghĩa bảng trên <strong>Amazon SageMaker Lakehouse Catalog</strong> với dữ liệu lưu trên Amazon S3</li><li>Hỗ trợ các định dạng bảng mở như Apache Hudi, Delta Lake và Apache Iceberg</li><li>Tương thích với <strong>AWS Lake Formation permissions</strong> để kiểm soát truy cập chi tiết</li></ul><p>Ngoài ra, dbt-glue tối ưu hóa việc sử dụng tài nguyên bằng nhiều kỹ thuật mở rộng trên các phiên tương tác của AWS Glue.</p><h2 id=trường-hợp-sử-dụng-phổ-biến>Trường hợp sử dụng phổ biến</h2><p><strong>1. Đội analytics trong một tập đoàn</strong></p><p>Một đội analytics trung tâm cần theo dõi hiệu quả hoạt động. Họ ingest log ứng dụng vào các bảng Parquet ở tầng raw trong data lake trên S3. Họ cũng trích xuất dữ liệu có cấu trúc từ các hệ thống vận hành</p><p>Ví dụ: Schema tổ chức và chi phí của các thành phần khác nhau — lưu trong tầng raw dưới dạng Iceberg để giữ nguyên schema ban đầu, phục vụ cho nhiều truy cập dữ liệu.</p><p>Đội sử dụng dbt-glue để xây dựng mô hình gold đã được transform tối ưu cho BI — kết hợp technical logs với billing data và tổ chức số liệu theo từng business unit. Iceberg hỗ trợ mô hình kiểu warehouse giúp BI phân tích perform tốt. Kết hợp Iceberg và dbt-glue cho phép xây dựng data model sẵn sàng để sử dụng.</p><p><strong>2. Tạo data product tuân thủ GDPR</strong></p><p>Một đội analytics tại công ty châu Âu có data lake trên S3 và cần tạo data product mới để làm phong phú dữ liệu y tế — yêu cầu tuân thủ GDPR như quyền bị lãng quên và xóa dữ liệu. Họ dùng Iceberg để đáp ứng những yêu cầu này, và dbt để model dữ liệu trên data lake vì dbt-glue hỗ trợ Iceberg và đơn giản hoá việc sử dụng định dạng lưu trữ này.</p><h2 id=cách-hoạt-động-của-dbt-và-dbt-glue>Cách hoạt động của dbt và dbt-glue</h2><ul><li><p>Các tính năng chính của dbt:</p><ul><li><strong>Project</strong> – cấu trúc cấp cao cho các staging, models, permissions và adapters. Có thể quản lý bằng Git.</li><li><strong>SQL</strong> – dbt dùng SQL (với templating Jinja) để biểu diễn logic biến đổi một cách modular. Thay vì phải sao chép/dán mã SQL ở nhiều nơi, các kỹ sư dữ liệu có thể định nghĩa các phép biến đổi theo mô-đun và gọi chúng từ các vị trí khác trong dự án. Việc có một quy trình xử lý dữ liệu theo mô-đun giúp các kỹ sư dữ liệu cộng tác hiệu quả hơn trên cùng một dự án.</li><li><strong>Models</strong> – mỗi dbt model là một SELECT statement lưu trong file .sql. Các kỹ sư dữ liệu định nghĩa các mô hình dbt cho cách biểu diễn dữ liệu của họ.</li><li><strong>Materializations</strong> – cách định nghĩa persist model trong đích lưu (table, view, incremental,ephemeral, and materialized view).</li><li><strong>Data lineage</strong> – theo dõi dòng dữ liệu và phân tích tác động khi thay đổi.</li></ul></li><li><p>Luồng dữ liệu tổng quan:</p><ol><li><p>Data engineer ingest dữ liệu từ nguồn vào các bảng raw và định nghĩa chúng.</p></li><li><p>Viết các dbt model bằng SQL template.</p></li><li><p>dbt adapter chuyển các dbt model thành SQL tương thích với Data Warehouse.</p></li><li><p>Hệ thống thực thi các SQL đó để tạo intermediate hoặc final tables/views/materialized views.</p></li></ol></li></ul><p>Sơ đồ sau mô tả kiến trúc.
+<img alt=architecture src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image.png></p><ul><li><p>Cách dbt-glue hoạt động với AWS Glue</p><ol><li><p>dbt-glue chuyển dbt models sang SQL tương thích với Spark SQL.</p></li><li><p>AWS Glue interactive sessions thực thi các SQL này để tạo bảng intermediate/final hoặc views.</p></li><li><p>dbt-glue hỗ trợ các định dạng: <code>csv</code>, <code>parquet</code>, <code>hudi</code>, <code>delta</code>, <code>iceberg</code>.</p></li><li><p>Với adapter này, materialization thường dùng là table hoặc incremental. Tùy chiến lược incremental, merge strategy yêu cầu <code>hudi</code>, <code>delta</code>, hoặc <code>iceberg</code>. Với <code>append</code> hoặc <code>insert_overwrite</code>, bạn có thể dùng bất kỳ định dạng kể trên.</p></li></ol></li></ul><p>Ví dụ minh họa
+<img alt="diagram illustrates" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-1.png></p><h2 id=trường-hợp-ví-dụ>Trường hợp ví dụ</h2><p>Trong bài này, AWS lấy dữ liệu từ dataset <a href=https://registry.opendata.aws/nyc-tlc-trip-records-pds/><strong>New York City Taxi Records</strong></a> trong Registry of <a href=https://registry.opendata.aws/>Open Data on AWS (RODA)</a>. Dữ liệu raw Parquet lưu các thông tin chuyến đi taxi.</p><ul><li>Mục tiêu là tạo 3 bảng metrics từ bảng raw:<ul><li><strong>silver_avg_metrics</strong> – metrics cơ bản cho năm 2016</li><li><strong>gold_passengers_metrics</strong> – metrics theo passenger</li><li><strong>gold_cost_metrics</strong> – metrics theo cost</li></ul></li></ul><p>Kết quả cuối cùng là các bảng gold định dạng Iceberg để query tương tác qua <strong>Amazon Athena</strong>.</p><h2 id=các-bước-chuẩn-bị>Các bước chuẩn bị</h2><ul><li>Chuẩn bị <strong>IAM Role</strong> với quyền chạy <strong>Glue interactive session</strong> và <strong>dbt-glue</strong></li><li>Tạo Glue database + table cho dataset Taxi</li><li>Tạo S3 bucket để lưu dữ liệu output</li><li>Cấu hình Athena để thăm dò dữ liệu</li><li>Dùng CloudFormation để deploy toàn bộ hạ tầng nhanh chóng</li></ul><p>Với những bước chuẩn bị này, chúng ta mô phỏng tình huống các Data Engineers đã nhập dữ liệu từ các nguồn dữ liệu vào các bảng thô và đã định nghĩa các bảng cho các bảng thô đó. Để dễ sử dụng, chúng tôi đã chuẩn bị một mẫu CloudFormation.</p><p>Mẫu này triển khai tất cả cơ sở hạ tầng cần thiết. Để tạo các tài nguyên này, hãy chọn Khởi chạy Stack trong Vùng <code>us-east-1</code>.</p><h2 id=các-bước-làm-chi-tiết>Các bước làm chi tiết:</h2><p><strong>1. Cài dbt và dbt CLI</strong> với dòng lệnh sau: <code>$ pip3 install --no-cache-dir dbt-core </code><strong>2. Cài đặt adapter dbt-glue</strong> với <code>$ pip3 install --no-cache-dir dbt-glue</code>
+<strong>3. Khởi tạo dbt project (dbt init)</strong> với <code>$ dbt init</code> và nhập tên <code>dbt_glue_demo</code>. Chọn database <code>glue</code>. Bây giờ dự án trống đã được tạo:</p><pre tabindex=0><code>$ cd dbt_glue_demo 
+$ tree .
+.
+├── README.md
+├── analyses
+├── dbt_project.yml
+├── macros
+├── models
+│   └── example
+│       ├── my_first_dbt_model.sql
+│       ├── my_second_dbt_model.sql
+│       └── schema.yml
+├── seeds
+├── snapshots
+└── tests
+</code></pre><p><strong>4. Tạo source table</strong>: Trong <code>models/</code> tạo file <code>source_tables.yml</code> với nội dung:</p><pre tabindex=0><code>version: 2
+
+sources:
+  - name: data_source
+    schema: nyctaxi
+
+    tables:
+      - name: records
+</code></pre><p>Source table được định nghĩa tương ứng với AWS Glue table <code>nyctaxi.records</code>, đây là bảng mà chúng ta đã tạo ở CloudFormation stack.</p><p><strong>5. Tạo models</strong></p><p>Ở bước này, chúng ta tạo một mô hình dbt biểu diễn các giá trị trung bình cho thời gian chuyến đi, số lượng hành khách, quãng đường chuyến đi và tổng chi phí. Hoàn thành các bước sau:</p><ul><li>Tạo thư mục <strong>silver</strong> trong thư mục <strong>models</strong>, sau đó tạo file <strong>silver_avg_metrics.sql</strong> với nội dung sau:</li></ul><pre tabindex=0><code>WITH source_avg as ( 
+    SELECT avg((CAST(dropoff_datetime as LONG) - CAST(pickup_datetime as LONG))/60) as avg_duration 
+    , avg(passenger_count) as avg_passenger_count 
+    , avg(trip_distance) as avg_trip_distance 
+    , avg(total_amount) as avg_total_amount
+    , year
+    , month 
+    , type
+    FROM {{ source(&#39;data_source&#39;, &#39;records&#39;) }} 
+    WHERE year = &#34;2016&#34;
+    AND dropoff_datetime is not null 
+    GROUP BY year, month, type
+) 
+SELECT *
+FROM source_avg
+</code></pre><ul><li>Tạo file <strong>schema.yml</strong> với nội dung sau:</li></ul><pre tabindex=0><code>version: 2
+
+models:
+  - name: silver_avg_metrics
+    description: This table has basic metrics based on NYC Taxi Open Data for the year 2016
+
+    columns:
+      - name: avg_duration
+        description: The average duration of a NYC Taxi trip
+
+      - name: avg_passenger_count
+        description: The average number of passenger per NYC Taxi trip
+
+      - name: avg_trip_distance
+        description: The average NYC Taxi trip distance
+
+      - name: avg_total_amount
+        description: The avarage amount of a NYC Taxi trip
+
+      - name: year
+        description: The year of the NYC Taxi trip
+
+      - name: month
+        description: The month of the NYC Taxi trip 
+
+      - name: type
+        description: The type of the NYC Taxi 
+</code></pre><ul><li>Tạo thư mục <strong>gold</strong> trong models, bên trong có file <strong>gold_cost_metrics.sql</strong> với nội dung sau:</li></ul><pre tabindex=0><code>{{ config(
+    materialized=&#39;incremental&#39;,
+    incremental_strategy=&#39;merge&#39;,
+    unique_key=[&#34;year&#34;, &#34;month&#34;, &#34;type&#34;],
+    file_format=&#39;iceberg&#39;,
+    iceberg_expire_snapshots=&#39;False&#39;,
+    table_properties={&#39;format-version&#39;: &#39;2&#39;}
+) }}
+SELECT (avg_total_amount/avg_trip_distance) as avg_cost_per_distance
+, (avg_total_amount/avg_duration) as avg_cost_per_minute
+, year
+, month 
+, type 
+FROM {{ ref(&#39;silver_avg_metrics&#39;) }}
+</code></pre><ul><li>Tạo file <strong>models/gold/gold_passengers_metrics.sql</strong> với nội dung:</li></ul><pre tabindex=0><code>{{ config(
+    materialized=&#39;incremental&#39;,
+    incremental_strategy=&#39;merge&#39;,
+    unique_key=[&#34;year&#34;, &#34;month&#34;, &#34;type&#34;],
+    file_format=&#39;iceberg&#39;,
+    iceberg_expire_snapshots=&#39;False&#39;,
+    table_properties={&#39;format-version&#39;: &#39;2&#39;}
+) }}
+SELECT (avg_total_amount/avg_passenger_count) as avg_cost_per_passenger
+, (avg_duration/avg_passenger_count) as avg_duration_per_passenger
+, (avg_trip_distance/avg_passenger_count) as avg_trip_distance_per_passenger
+, year
+, month 
+, type 
+FROM {{ ref(&#39;silver_avg_metrics&#39;) }}
+</code></pre><ul><li>Tạo <strong>models/gold/schema.yml</strong> với nội dung:</li></ul><pre tabindex=0><code>version: 2
+
+models:
+  - name: gold_cost_metrics
+    description: This table has metrics per cost based on NYC Taxi Open Data
+
+    columns:
+      - name: avg_cost_per_distance
+        description: The average cost per distance of a NYC Taxi trip
+
+      - name: avg_cost_per_minute
+        description: The average cost per minute of a NYC Taxi trip
+
+      - name: year
+        description: The year of the NYC Taxi trip
+
+      - name: month
+        description: The month of the NYC Taxi trip
+
+      - name: type
+        description: The type of the NYC Taxi
+
+  - name: gold_passengers_metrics
+    description: This table has metrics per passenger based on NYC Taxi Open Data
+
+    columns:
+      - name: avg_cost_per_passenger
+        description: The average cost per passenger for a NYC Taxi trip
+
+      - name: avg_duration_per_passenger
+        description: The average number of passenger per NYC Taxi trip
+
+      - name: avg_trip_distance_per_passenger
+        description: The average NYC Taxi trip distance
+
+      - name: year
+        description: The year of the NYC Taxi trip
+
+      - name: month
+        description: The month of the NYC Taxi trip 
+
+      - name: type
+        description: The type of the NYC Taxi
+</code></pre><ul><li>Cuối cùng, xóa <strong>models/example/</strong> vì đây là folder ví dụ khi chạy <code>dbt init</code>.</li></ul><p><strong>6. Cấu hình dbt project</strong></p><ul><li>File <strong>dbt_project.yml</strong> bao gồm nội dung:</li></ul><pre tabindex=0><code>models:
+  dbt_glue_demo:
+    # Config indicated by + and applies to all files under models/example/
+    example:
+      +materialized: view
+</code></pre><ul><li>Vì ta muốn hiện thực hóa các mô hình dưới lớp silver dưới dạng Parquet. ta cần thay thế nội dung trong file <strong>dbt_project.yml</strong> như sau:</li></ul><pre tabindex=0><code>models:
+  dbt_glue_demo:
+    silver:
+      +materialized: table
+</code></pre><p><strong>7. Cấu hình dbt profile</strong></p><p><strong>dbt profile</strong> là một cấu hình quy định cách kết nối với một cơ sở dữ liệu cụ thể và được định nghĩa trong tệp <strong>profiles.yml</strong> trong dự án dbt.</p><p>Thực hiện các bước sau để cấu hình dbt profile:</p><ol><li><p>Tạo thư mục <code>profiles</code>.</p></li><li><p>Tạo tệp <code>profiles/profiles.yml</code> với nội dung sau:</p><pre tabindex=0><code>dbt_glue_demo:
+target: dev
+outputs:
+    dev:
+    type: glue
+    query-comment: demo-nyctaxi
+    role_arn: &#34;{{ env_var(&#39;DBT_ROLE_ARN&#39;) }}&#34;
+    region: us-east-1
+    workers: 5
+    worker_type: G.1X
+    schema: &#34;dbt_glue_demo_nyc_metrics&#34;
+    database: &#34;dbt_glue_demo_nyc_metrics&#34;
+    session_provisioning_timeout_in_seconds: 120
+    location: &#34;{{ env_var(&#39;DBT_S3_LOCATION&#39;) }}&#34;
+</code></pre></li><li><p>Tạo thư mục <code>profiles/iceberg/</code></p></li><li><p>Tạo file <code>profiles/iceberg/profiles.yml</code> với nội dung:</p><pre tabindex=0><code>dbt_glue_demo:
+target: dev
+outputs:
+    dev:
+        type: glue
+        query-comment: demo-nyctaxi
+        role_arn: &#34;{{ env_var(&#39;DBT_ROLE_ARN&#39;) }}&#34;
+        region: us-east-1
+        workers: 5
+        worker_type: G.1X
+        schema: &#34;dbt_glue_demo_nyc_metrics&#34;
+        database: &#34;dbt_glue_demo_nyc_metrics&#34;
+        session_provisioning_timeout_in_seconds: 120
+        location: &#34;{{ env_var(&#39;DBT_S3_LOCATION&#39;) }}&#34;
+        datalake_formats: &#34;iceberg&#34;
+        conf: spark.sql.catalog.glue_catalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql catalog.glue_catalog.warehouse={{ env_var(&#39;DBT_S3_LOCATION&#39;) }}warehouse/ --conf spark.sql.catalog.glue_catalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.glue_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+</code></pre></li></ol><p>Hai dòng cuối cùng được thêm vào để thiết lập cấu hình Iceberg trên các phiên tương tác AWS Glue.</p><p><strong>8. Chạy dbt project</strong></p><p>Bây giờ là lúc chạy dự án dbt. Hoàn thành các bước sau:</p><ol><li>Để chạy project dbt, bạn phải ở trong thư mục dự án: ``$ cd dbt_glue_demo```</li><li>Dự án yêu cầu bạn đặt các biến môi trường để chạy trên tài khoản AWS:</li></ol><pre tabindex=0><code>$ export DBT_ROLE_ARN=&#34;arn:aws:iam::$(aws sts get-caller-identity --query &#34;Account&#34; --output text):role/GlueInteractiveSessionRole&#34;
+$ export DBT_S3_LOCATION=&#34;s3://aws-dbt-glue-datalake-$(aws sts get-caller-identity --query &#34;Account&#34; --output text)-us-east-1&#34;
+</code></pre><ol start=3><li>Đảm bảo cấu hình được thiết lập chính xác từ dòng lệnh:</li></ol><pre tabindex=0><code>$ dbt debug --profiles-dir profiles
+...
+05:34:22 Connection test: [OK connection ok]
+05:34:22 All checks passed!
+</code></pre><p>Nếu bạn gặp bất kỳ lỗi nào, hãy kiểm tra xem bạn đã cung cấp đúng IAM role ARN và vị trí S3 ở Bước 2 chưa.
+4. Chạy các mô hình với đoạn mã sau:</p><pre tabindex=0><code>$ dbt run -m silver --profiles-dir profiles
+$ dbt run -m gold --profiles-dir profiles/iceberg/
+</code></pre><p>Giờ đây, các bảng đã được tạo thành công trong SageMaker Lakehouse Catalog và dữ liệu được hiện thực hóa ở Amazon S3 location.</p><p>Bạn có thể xác minh các bảng đó bằng cách mở bảng điều khiển AWS Glue, chọn <strong>Databases</strong> trong ngăn điều hướng và mở <code>dbt_glue_demo_nyc_metrics</code>.
+<img alt="check db" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-2.png></p><h2 id=truy-vấn-các-bảng-được-cụ-thể-hóa-thông-qua-athena>Truy vấn các bảng được cụ thể hóa thông qua Athena</h2><p>Hãy truy vấn bảng mục tiêu bằng cách sử dụng Athena để xác minh các bảng được cụ thể hóa. Hoàn thành các bước sau:</p><ol><li><p>Trên bảng điều khiển Athena, chuyển nhóm làm việc sang <code>athena-dbt-glue-aws-blog</code>.</p></li><li><p>Nếu hộp thoại cài đặt <code>athena-dbt-glue-aws-blog</code> của nhóm làm việc xuất hiện, hãy chọn Acknowledge.</p></li><li><p>Sử dụng truy vấn sau để khám phá các số liệu được tạo bởi dự án dbt:</p></li></ol><pre tabindex=0><code>SELECT cm.avg_cost_per_minute
+    , cm.avg_cost_per_distance
+    , pm.avg_cost_per_passenger
+    , cm.year
+    , cm.month
+    , cm.type
+FROM &#34;dbt_glue_demo_nyc_metrics&#34;.&#34;gold_passengers_metrics&#34; pm
+LEFT JOIN &#34;dbt_glue_demo_nyc_metrics&#34;.&#34;gold_cost_metrics&#34; cm
+    ON cm.type = pm.type
+    AND cm.year = pm.year
+    AND cm.month = pm.month
+WHERE cm.type = &#39;yellow&#39;
+    AND cm.year = &#39;2016&#39;
+    AND cm.month = &#39;6&#39;
+</code></pre><p>Ảnh chụp màn hình sau đây hiển thị kết quả của truy vấn này.
+<img alt=result-query src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-3.png></p><h2 id=xem-lại-tài-liệu-dbt>Xem lại tài liệu dbt</h2><p>Hãy hoàn tất các bước sau để xem lại tài liệu của bạn:</p><ol><li>Tạo các tài liệu sau cho dự án:</li></ol><pre tabindex=0><code>$ dbt docs generate --profiles-dir profiles/iceberg
+11:41:51  Running with dbt=1.7.1
+11:41:51  Registered adapter: glue=1.7.1
+11:41:51  Unable to do partial parsing because profile has changed
+11:41:52  Found 3 models, 1 source, 0 exposures, 0 metrics, 478 macros, 0 groups, 0 semantic models
+11:41:52  
+11:41:53  Concurrency: 1 threads (target=&#39;dev&#39;)
+11:41:53  
+11:41:53  Building catalog
+11:43:32  Catalog written to /Users/username/Documents/workspace/dbt_glue_demo/target/catalog.json
+</code></pre><ol start=2><li><p>Chạy lệnh sau để mở tài liệu trên trình duyệt của bạn:
+<code>$ dbt docs serve --profiles-dir profiles/iceberg</code>
+<img alt="open doc" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-4.png></p></li><li><p>Trong ngăn điều hướng, chọn <code>gold_cost_metrics</code> trong <code>dbt_glue_demo/models/gold</code>.
+Bạn có thể xem chế độ xem chi tiết của mô hình <code>gold_cost_metrics</code>, như minh họa trong ảnh chụp màn hình sau.
+<img alt=model src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-5.png></p></li><li><p>Để xem biểu đồ dòng, hãy chọn biểu tượng hình tròn ở dưới cùng bên phải.</p></li></ol><p><img alt="circle icon" src=https://roses19.github.io/fcj-workshop-roses/images/3-Blogstranslated/image-6.png></p><h2 id=dọn-dẹp>Dọn dẹp</h2><p>Để làm sạch môi trường của bạn, hãy hoàn thành các bước sau:</p><ol><li><p>Xóa cơ sở dữ liệu được tạo bởi dbt:
+<code>$ aws glue delete-database —name dbt_glue_demo_nyc_metrics</code></p></li><li><p>Xóa tất cả dữ liệu đã tạo:</p></li></ol><pre tabindex=0><code>$ aws s3 rm s3://aws-dbt-glue-datalake-$(aws sts get-caller-identity —query &#34;Account&#34; —output text)-us-east-1/ —recursive
+$ aws s3 rm s3://aws-athena-dbt-glue-query-results-$(aws sts get-caller-identity —query &#34;Account&#34; —output text)-us-east-1/ —recursive
+</code></pre><ol start=3><li>Xóa ngăn xếp CloudFormation:
+<code>$ aws cloudformation delete-stack —stack-name dbt-demo</code></li></ol><h2 id=kết-luận>Kết luận</h2><p>Bài viết này đã trình bày cách bộ chuyển đổi dbt-glue hỗ trợ khối lượng công việc của bạn và cách bạn có thể xây dựng một ngăn xếp dữ liệu hiện đại bằng dbt và AWS Glue sử dụng bộ chuyển đổi dbt-glue. Bạn đã học được các thao tác từ đầu đến cuối và luồng dữ liệu để các kỹ sư dữ liệu xây dựng và quản lý ngăn xếp dữ liệu bằng dbt và bộ chuyển đổi dbt-glue.</p><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=https://roses19.github.io/fcj-workshop-roses/vi/3-blogstranslated/ title="Các bài blogs đã dịch"><i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=https://roses19.github.io/fcj-workshop-roses/vi/4-eventparticipated/ title="Các events đã tham gia" style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=https://roses19.github.io/fcj-workshop-roses/js/clipboard.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/perfect-scrollbar.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/perfect-scrollbar.jquery.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/jquery.sticky.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/featherlight.min.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/highlight.pack.js?1768447978></script><script>hljs.initHighlightingOnLoad()</script><script src=https://roses19.github.io/fcj-workshop-roses/js/modernizr.custom-3.6.0.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/learn.js?1768447978></script><script src=https://roses19.github.io/fcj-workshop-roses/js/hugo-learn.js?1768447978></script><link href=https://roses19.github.io/fcj-workshop-roses/mermaid/mermaid.css?1768447978 rel=stylesheet><script src=https://roses19.github.io/fcj-workshop-roses/mermaid/mermaid.js?1768447978></script><script>mermaid.initialize({startOnLoad:!0})</script><script>(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,(e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date),(i=t.createElement(n),a=t.getElementsByTagName(n)[0]),i.async=1,i.src=s,a.parentNode.insertBefore(i,a)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-158079754-2","auto"),ga("send","pageview")</script></body></html>
